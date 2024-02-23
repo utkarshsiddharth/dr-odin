@@ -8,7 +8,6 @@ import Login from "./firebase/login.tsx";
 import Signup from "./firebase/signup.tsx";
 import Crm from "./container/dashboards/crm/crm.tsx";
 import Loader from "./components/common/loader/loader.tsx";
-import Productdetails from "./container/pages/ecommerce/productdetails/productdetails.tsx";
 import Productlist from "./container/pages/ecommerce/productentry/productentry.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

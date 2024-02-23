@@ -1,6 +1,5 @@
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
-import { FilePond } from "react-filepond";
 import layer from "../../../../assets/images/ecommerce/png/layer.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,27 +9,71 @@ import axios from "axios";
 interface ProductlistProps {}
 const schema = yup
   .object({
-    modelNumber: yup.string().required(),
+    moddleNo: yup.string().required(),
+    name: yup.string().required(),
     heading: yup.string().required(),
     price: yup.string().required(),
     originalPrice: yup.string().required(),
-    productLink: yup.string().required(),
+    image: yup.string().required(),
   })
   .required();
 const Productlist: FC<ProductlistProps> = () => {
   const [product, setProduct] = useState([]);
+  console.log("product", product);
   const [BasicExpanded, setBasicExpanded] = useState(true);
   const [Basicshow, setBasicshow] = useState(true);
   const BasicHandleExpandClick = () => {
     setBasicExpanded(!BasicExpanded);
   };
-  const [files2, setFiles2] = useState<any>([]);
   const [xlShow, setXlShow] = useState(false);
 
   const leftContainerRef = useRef<HTMLDivElement | null>(null);
   const rightContainerRef = useRef<HTMLDivElement | null>(null);
   const windowElement: any = window;
 
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(
+        "https://doctorodinbackend.onrender.com/product",
+        config
+      );
+      // console.log("res", res);
+      setProduct(res?.data);
+    } catch (error) {
+      console.error("error fetching products:", error);
+    }
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const formSubmit = async (data: any) => {
+    console.log("data", data);
+    try {
+      const res= await axios.post(
+        "https://doctorodinbackend.onrender.com/product",
+        data,
+        config
+      );
+      // console.log("data",data);
+      console.log("res",res);
+      fetchProducts();
+      setXlShow(false);
+    } catch (error) {
+      console.log("error fetching products:", error);
+    }
+  };
   useEffect(() => {
     fetchProducts();
     if (leftContainerRef.current && rightContainerRef.current) {
@@ -40,30 +83,6 @@ const Productlist: FC<ProductlistProps> = () => {
       ]);
     }
   }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get("https://odinbackend.onrender.com/products");
-      setProduct(res.data);
-    } catch (error) {
-      console.error("error fetching products:", error);
-    }
-  };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const onSubmit = async (data: any) => {
-    try {
-      await axios.post("https://odinbackend.onrender.com/product", data);
-      fetchProducts();
-    } catch (error) {
-      console.log("error fetching products:", error);
-    }
-  };
 
   return (
     <Fragment>
@@ -98,7 +117,7 @@ const Productlist: FC<ProductlistProps> = () => {
         <Col xl={3} ref={leftContainerRef} id="draggable-left">
           {Basicshow ? (
             <div>
-              {product.map((product: any, index: number) => (
+              {product?.products?.map((product: any, index: number) => (
                 <Card key={index} className="custom-card">
                   <Card.Body className="rounded-3 mt-3 ">
                     <Dropdown className="d-flex justify-content-end">
@@ -120,22 +139,19 @@ const Productlist: FC<ProductlistProps> = () => {
                       className="rounded mx-auto d-block"
                       alt="..."
                     />
-
-                    <p className=" d-flex justify-content-end product-description fs-13 text-muted ">
-                      (JPD-FR202)
+                    <p className="d-flex justify-content-end product-description fs-13 text-muted ">
+                      {product.moddleNo}
                     </p>
                   </Card.Body>
 
                   <Card.Footer>
-                    <span className="fs-14 fw-bold">
-                      Contact Less Thermometer
-                    </span>
+                    <span className="fs-14 fw-bold">{product.heading}</span>
                     <p className="fs-14  text-primary fw-semibold mb-0 d-flex align-items-center">
-                      ₹ 3999
+                      ₹{product.price}
                     </p>
                     <div className="d-flex justify-content-between">
                       <span className="op-7 text-decoration-line-through">
-                        MRP 4999
+                        MRP{product.originalPrice}
                       </span>
                       <button className="btn btn-primary rounded-5">
                         Buy Now
@@ -327,38 +343,45 @@ const Productlist: FC<ProductlistProps> = () => {
             Add your Content
           </Modal.Title>
         </Modal.Header>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(formSubmit)}>
           <Modal.Body>
             <Col xl={12}>
               <Card className="custom-card">
                 <Card.Body>
-                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
-                    Upload Image
-                  </Form.Label>
-                  <FilePond
-                    className="multiple-filepond"
-                    files={files2}
-                    onupdatefiles={setFiles2}
-                    maxFiles={1}
-                    server="/api"
-                    acceptedFileTypes={["image/jpeg", "image/png"]}
-                    // name="files"
-                    labelIdle="Drag & Drop your Images here or click"
+                  <Form.Label htmlFor="input-file">Image Upload</Form.Label>
+                  <Form.Control
+                    type="file"
+                    id="input-file"
+                     accept="image/jpeg ,image/png"
+                    {...register("image",{required: true})}
                   />
-
+                  <p className="text-danger ">{errors.image?.message}</p>
+              
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Model Number
                   </Form.Label>
                   <Form.Control
                     type="text"
+                    // name="photo"
                     id="input-text"
                     placeholder="Enter your model number"
-                    {...register("modelNumber", {
+                    {...register("moddleNo", {
                       required: true,
                       maxLength: 20,
                     })}
                   />
-                  <p className="text-danger ">{errors.modelNumber?.message}</p>
+                  <p className="text-danger ">{errors.moddleNo?.message}</p>
+                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                    Name
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="input-text"
+                    placeholder="Enter your name"
+                    {...register("name", { required: true, maxLength: 20 })}
+                  />
+                  <p className="text-danger ">{errors.name?.message}</p>
+                  
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Heading
                   </Form.Label>
@@ -399,7 +422,7 @@ const Productlist: FC<ProductlistProps> = () => {
                   <p className="text-danger ">
                     {errors.originalPrice?.message}
                   </p>
-                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                  {/* <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Product Link
                   </Form.Label>
                   <Form.Control
@@ -411,7 +434,7 @@ const Productlist: FC<ProductlistProps> = () => {
                       maxLength: 30,
                     })}
                   />
-                  <p className="text-danger ">{errors.productLink?.message}</p>
+                  <p className="text-danger ">{errors.productLink?.message}</p> */}
                 </Card.Body>
               </Card>
             </Col>
@@ -420,7 +443,7 @@ const Productlist: FC<ProductlistProps> = () => {
             <button
               className="btn btn-primary btn-sm text-nowrap mt-2"
               type="submit"
-              onClick={() => setXlShow(true)}
+              // onClick={() => setXlShow(true)}
             >
               Add Product
             </button>

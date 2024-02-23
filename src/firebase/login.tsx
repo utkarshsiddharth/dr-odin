@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import { LocalStorageBackup } from "../components/common/switcher/switcherdata/switcherdata";
 import { ThemeChanger } from "../redux/action";
 import axios from "axios";
-import { auth } from "./firebaseapi";
 
 interface LoginProps {}
 
@@ -37,49 +36,51 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
     navigate(path);
   };
 
-  // const handleLogin = async ()=>{
-  //   try{
-  //     const res = await axios.post("https://odinbackend.onrender.com/login", data);
-  //     if(res.status === 200){
-  //       const user = res.data;
-  //       console.log(user);
-  //       routeChange();
-  //     }
-  //     else{
-  //       const errorData = res.data;
-  //       setError(errorData.message);
-  //     }
-  //   }
-  //   catch (error) {
-  //     console.error("Error:", error);
-  //     setError("An error occurred. Please try again later.");
-  //   }
-  //  };
-
-  const Login = (e: any) => {
-    e.preventDefault();
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((user) => {
+  const handleLogin = async ()=>{
+    try{
+      const res = await axios.post("https://doctorodinbackend.onrender.com/login", data);
+      if(res.status === 200){
+        const user = res?.data;
+        alert(user.message);
+        localStorage.setItem("token", user?.token);
         console.log(user);
         routeChange();
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(err.message);
-      });
-  };
-  const Login1 = () => {
-    if (data.email == "example@gmail.com" && data.password == "password123") {
-      routeChange();
-    } else {
-      setError("The Auction details did not Match");
-      setData({
-        email: "example@gmail.com",
-        password: "password123",
-      });
+      }
+      else{
+        const errorData = res.data;
+        setError(errorData.message);
+      }
     }
-  };
+    catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred. Please try again later.");
+    }
+   };
+
+  // const Login = (e: any) => {
+  //   e.preventDefault();
+  //   auth
+  //     .signInWithEmailAndPassword(email, password)
+  //     .then((user) => {
+  //       console.log(user);
+  //       routeChange();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setError(err.message);
+  //     });
+  // };
+  // const Login1 = () => {
+  //   if (data.email == "example@gmail.com" && data.password == "password123") {
+  //     routeChange();
+  //   } else {
+  //     setError("The Auction details did not Match");
+  //     setData({
+  //       email: "example@gmail.com",
+  //       password: "password123",
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     LocalStorageBackup(ThemeChanger);
@@ -203,7 +204,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                         <Col xl={12} className="d-grid mt-2">
                           <Button
                             variant="primary"
-                            onClick={Login1}
+                            onClick={handleLogin}
                             size="lg"
                             className="btn"
                           >
