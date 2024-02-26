@@ -7,6 +7,8 @@ import {
   Form,
   InputGroup,
   Tab,
+  Toast,
+  ToastContainer,
 } from "react-bootstrap";
 import desktoplogo from "../assets/images/brand-logos/desktop-logo.png";
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
@@ -14,12 +16,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { LocalStorageBackup } from "../components/common/switcher/switcherdata/switcherdata";
 import { ThemeChanger } from "../redux/action";
+import favicon from "../assets/images/brand-logos/favicon.ico";
+
 import axios from "axios";
 
 interface LoginProps {}
 
 const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
   const [passwordshow1, setpasswordshow1] = useState(false);
+  const [show, setShow] = useState(false);
   const [err, setError] = useState("");
   const [data, setData] = useState({
     email: "example@gmail.com",
@@ -36,26 +41,31 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
     navigate(path);
   };
 
-  const handleLogin = async ()=>{
-    try{
-      const res = await axios.post("https://doctorodinbackend.onrender.com/login", data);
-      if(res.status === 200){
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(
+        "https://doctorodinbackend.onrender.com/login",
+        data
+      );
+      if (res.status === 200) {
         const user = res?.data;
-        alert(user.message);
+        setShow(true);
         localStorage.setItem("token", user?.token);
         console.log(user);
-        routeChange();
-      }
-      else{
+        setTimeout(() => {
+          routeChange();
+        }, 1000);
+      } else {
         const errorData = res.data;
         setError(errorData.message);
+        alert(errorData.message);
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error:", error);
       setError("An error occurred. Please try again later.");
+      alert("An error occurred. Please try again later.");
     }
-   };
+  };
 
   // const Login = (e: any) => {
   //   e.preventDefault();
@@ -88,6 +98,31 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
 
   return (
     <Fragment>
+      <div>
+        {show && (
+          <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4">
+            <Toast
+              onClose={() => setShow(false)}
+              show={show}
+              delay={5000}
+              autohide
+              bg="primary-transparent"
+              className="toast colored-toast"
+            >
+              <Toast.Header className="toast-header bg-primary text-fixed-white mb-0">
+                <img
+                  className="bd-placeholder-img rounded me-2"
+                  src={favicon}
+                  alt="..."
+                />
+                <strong className="me-auto">Dr.Odin</strong>
+              </Toast.Header>
+              <Toast.Body>Successfully Logged In!!</Toast.Body>
+            </Toast>
+          </ToastContainer>
+        )}
+      </div>
+
       <div className="container">
         <div className="row justify-content-center align-items-center authentication authentication-basic h-100">
           <Col xxl={4} xl={5} lg={5} md={6} sm={8} className="col-12">
@@ -204,7 +239,9 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                         <Col xl={12} className="d-grid mt-2">
                           <Button
                             variant="primary"
-                            onClick={handleLogin}
+                            onClick={() => {
+                              handleLogin();
+                            }}
                             size="lg"
                             className="btn"
                           >

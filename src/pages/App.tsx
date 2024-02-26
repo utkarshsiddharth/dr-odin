@@ -10,6 +10,8 @@ import Switcher from "../components/common/switcher/switcher";
 import Loader from "../components/common/loader/loader";
 import TabToTop from "../components/common/tabtotop/tabtotop";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [MyclassName, setMyClass] = useState("");
 
@@ -49,6 +51,7 @@ function App() {
           />
           <Switcher />
           <div className="page">
+          <ToastContainer />
             <Header />
             <Sidebar />
             <div className="main-content app-content" onClick={Bodyclickk}>

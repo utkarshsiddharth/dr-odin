@@ -9,6 +9,7 @@ import Signup from "./firebase/signup.tsx";
 import Crm from "./container/dashboards/crm/crm.tsx";
 import Loader from "./components/common/loader/loader.tsx";
 import Productlist from "./container/pages/ecommerce/productentry/productentry.tsx";
+import EditForm from "./container/pages/ecommerce/editform/editform.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
@@ -38,6 +39,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route
               path={`${import.meta.env.BASE_URL}productentry/productentry`}
               element={<Productlist />}
+            />
+             <Route
+              path={`${import.meta.env.BASE_URL}editform/editform`}
+              element={<EditForm />}
             />
           </Route>
         </Routes>
