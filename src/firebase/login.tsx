@@ -58,12 +58,12 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
       } else {
         const errorData = res.data;
         setError(errorData.message);
-        alert(errorData.message);
+        setShow(true);
       }
     } catch (error) {
       console.error("Error:", error);
-      setError("An error occurred. Please try again later.");
-      alert("An error occurred. Please try again later.");
+      setError("Invalid Credentials!!");
+      setShow(true);
     }
   };
 
@@ -117,7 +117,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                 />
                 <strong className="me-auto">Dr.Odin</strong>
               </Toast.Header>
-              <Toast.Body>Successfully Logged In!!</Toast.Body>
+              <Toast.Body>{err ? err : "Successfully Logged In!!"}</Toast.Body>
             </Toast>
           </ToastContainer>
         )}

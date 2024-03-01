@@ -1,13 +1,26 @@
 /* eslint-disable react/jsx-key */
 import { FC, Fragment, useEffect, useRef, useState } from "react";
-import { Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  Form,
+  Modal,
+  Row,
+  Toast,
+  ToastContainer,
+} from "react-bootstrap";
 import layer from "../../../../assets/images/ecommerce/png/layer.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { _ } from "gridjs-react";
 
-interface ProductlistProps {}
+interface ProductlistProps {
+  id: string;
+}
 const schema = yup
   .object({
     moddleNo: yup.string().required(),
@@ -20,13 +33,17 @@ const schema = yup
   .required();
 const Productlist: FC<ProductlistProps> = () => {
   const [product, setProduct] = useState([]);
+  const [show, setShow] = useState(false);
+  // const [textShow, setTextShow] = useState(false);
   console.log("product", product);
   const [xlShow, setXlShow] = useState(false);
-
   const leftContainerRef = useRef<HTMLDivElement | null>(null);
   const rightContainerRef = useRef<HTMLDivElement | null>(null);
   const windowElement: any = window;
 
+  // const toggleInput = () => {
+  //   setTextShow(!textShow);
+  // };
   const token = localStorage.getItem("token");
   console.log(token);
   const config = {
@@ -69,6 +86,7 @@ const Productlist: FC<ProductlistProps> = () => {
     } catch (error) {
       console.log("error fetching products:", error);
     }
+    setShow(true);
   };
   useEffect(() => {
     fetchProducts();
@@ -79,6 +97,20 @@ const Productlist: FC<ProductlistProps> = () => {
       ]);
     }
   }, []);
+const handleDelete = async (productId: string) => {
+  try {
+    await axios.delete(
+      `https://doctorodinbackend.onrender.com/product/${productId}`,
+      config
+    );
+    // Update state to remove the deleted product
+    setProduct(prevProducts =>
+      prevProducts.filter(product => product?._id !== productId)
+    );
+  } catch (error) {
+    console.error("Error deleting product:", error);
+  }
+};
 
   return (
     <Fragment>
@@ -111,24 +143,45 @@ const Productlist: FC<ProductlistProps> = () => {
 
       <Row className="d-flex">
         {product?.products?.map((product: any, index: number) => (
-          <Col xl={3} ref={leftContainerRef} id="draggable-right">
+          <Col xl={3}>
             <div>
-              <Card key={index} className="custom-card">
-                <Card.Body className="rounded-3 mt-3 ">
-                  <Dropdown className="d-flex justify-content-end">
+              <Card
+                key={index}
+                className="custom-card"
+              >
+                <Card.Body className="rounded-3 mt-3">
+                  <Dropdown className="d-flex justify-content-between ">
+                    <div className="">
+                      <Button
+                        variant="light"
+                        className="btn btn-icon btn-wave waves-light no-caret"
+                        // onClick={toggleInput}
+                      >
+                        <i className="ri-edit-line text-primary fs-16"></i>
+                      </Button>
+                      {/* {textShow && <Form.Control type="text" id="input-text" style={{ width:"17%" }}/>} */}
+                    </div>
                     <Dropdown.Toggle
                       variant="light"
-                      className="btn btn-icon  btn-wave waves-light no-caret"
+                      className="btn btn-icon btn-wave waves-light no-caret"
                       type="button"
                     >
-                      <i className=" bi bi-three-dots-vertical text-primary fs-14"></i>
+                      <i className="bi bi-three-dots-vertical text-primary fs-14 "></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="/editform/editform">Edit</Dropdown.Item>
-                      <Dropdown.Item href="#">Delete All</Dropdown.Item>
+                      <Dropdown.Item
+                        href={`/editform/editform/${product?._id}`}
+                      >
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        href="#"
+                        onClick={() => handleDelete(product._id)}
+                      >
+                        Delete
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-
                   <img
                     src={layer}
                     className="rounded mx-auto d-block"
@@ -142,11 +195,11 @@ const Productlist: FC<ProductlistProps> = () => {
                 <Card.Footer>
                   <span className="fs-14 fw-bold">{product.heading}</span>
                   <p className="fs-14  text-primary fw-semibold mb-0 d-flex align-items-center">
-                    ₹{product.price}
+                    ₹ {product.price}
                   </p>
                   <div className="d-flex justify-content-between">
                     <span className="op-7 text-decoration-line-through">
-                      MRP{product.originalPrice}
+                      MRP {product.originalPrice}
                     </span>
                     <button className="btn btn-primary rounded-5">
                       Buy Now
@@ -158,7 +211,7 @@ const Productlist: FC<ProductlistProps> = () => {
           </Col>
         ))}
       </Row>
-      
+
       <Modal
         size="xl"
         show={xlShow}
@@ -175,7 +228,9 @@ const Productlist: FC<ProductlistProps> = () => {
             <Col xl={12}>
               <Card className="custom-card">
                 <Card.Body>
-                  <Form.Label htmlFor="input-file">Image Upload</Form.Label>
+                  <Form.Label htmlFor="input-file" className="fs-14">
+                    Image Upload
+                  </Form.Label>
                   <Form.Control
                     type="file"
                     id="input-file"
@@ -277,6 +332,33 @@ const Productlist: FC<ProductlistProps> = () => {
           </Modal.Footer>
         </form>
       </Modal>
+
+      {show && (
+        <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4">
+          <Toast
+            onClose={() => setShow(false)}
+            show={show}
+            delay={5000}
+            autohide
+            bg="primary-transparent"
+            className="toast colored-toast"
+          >
+            <Toast.Header className="toast-header bg-primary text-fixed-white mb-0">
+              {/* <img
+                className="bd-placeholder-img rounded me-2"
+                src={favicon}
+                alt="..."
+              /> */}
+              <strong className="me-auto">Dr.Odin</strong>
+            </Toast.Header>
+            <Toast.Body>
+              {Object.keys(errors).length === 0
+                ? "Card Added Successfully!!"
+                : "Please fill required fields"}
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+      )}
     </Fragment>
   );
 };
