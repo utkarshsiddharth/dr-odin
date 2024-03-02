@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import {
-  Button,
   Card,
   Col,
   Dropdown,
@@ -11,7 +10,7 @@ import {
   Toast,
   ToastContainer,
 } from "react-bootstrap";
-import layer from "../../../../assets/images/ecommerce/png/layer.png";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -28,29 +27,34 @@ const schema = yup
     heading: yup.string().required(),
     price: yup.string().required(),
     originalPrice: yup.string().required(),
-    image: yup.string().required(),
+    // image: yup.string().required(),
+    link: yup.string().required(),
   })
   .required();
 const Productlist: FC<ProductlistProps> = () => {
   const [product, setProduct] = useState([]);
+  console.log("prodycut", product);
   const [show, setShow] = useState(false);
-  // const [textShow, setTextShow] = useState(false);
-  console.log("product", product);
+  // console.log("product", product);
   const [xlShow, setXlShow] = useState(false);
-  const leftContainerRef = useRef<HTMLDivElement | null>(null);
-  const rightContainerRef = useRef<HTMLDivElement | null>(null);
-  const windowElement: any = window;
+  const preset_key = "ngujniat";
+  const cloud_name = "dgmpifw8b";
+  const [image, setImage] = useState("");
 
-  // const toggleInput = () => {
-  //   setTextShow(!textShow);
-  // };
+ 
+  useEffect(() => {
+    fetchProducts();
+   
+  }, []);
+  //  token
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
   const config = {
     headers: {
       Authorization: token,
     },
   };
+  // get card api
   const fetchProducts = async () => {
     try {
       const res = await axios.get(
@@ -63,7 +67,6 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("error fetching products:", error);
     }
   };
-
   const {
     register,
     handleSubmit,
@@ -71,7 +74,24 @@ const Productlist: FC<ProductlistProps> = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  function handleFile(e: any) {
+    const file = e.target.files[0];
+    console.log("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", preset_key);
+    axios
+      .post(
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+        formData
+      )
+      .then((res) => setImage(res.data.secure_url))
+      // .then(res => console.log(res))
+      .catch((err) => console.log(err));
+  }
+  // create add api
   const formSubmit = async (data: any) => {
+    data.image = image;
     console.log("data", data);
     try {
       const res = await axios.post(
@@ -88,29 +108,38 @@ const Productlist: FC<ProductlistProps> = () => {
     }
     setShow(true);
   };
-  useEffect(() => {
-    fetchProducts();
-    if (leftContainerRef.current && rightContainerRef.current) {
-      windowElement.dragula([
-        leftContainerRef.current,
-        rightContainerRef.current,
-      ]);
+  // delete api
+  // const handleDelete = async (productId: string) => {
+  //   try {
+  //     await axios.delete(
+  //       `https://doctorodinbackend.onrender.com/product/${productId}`,
+  //       config
+  //     ).then(axios.get(
+  //       "https://doctorodinbackend.onrender.com/product",
+  //       config
+  //     );
+  //     // console.log("res", res);
+
+  //   } catch (error) {
+  //     console.error("Error deleting product:", error);
+  //   }
+  // };
+  const handleDelete = async (productId: string) => {
+    try {
+      await axios.delete(
+        `https://doctorodinbackend.onrender.com/product/${productId}`,
+        config
+      );
+      const res = await axios.get(
+        "https://doctorodinbackend.onrender.com/product",
+        config
+      );
+      setProduct(res.data);
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
-  }, []);
-const handleDelete = async (productId: string) => {
-  try {
-    await axios.delete(
-      `https://doctorodinbackend.onrender.com/product/${productId}`,
-      config
-    );
-    // Update state to remove the deleted product
-    setProduct(prevProducts =>
-      prevProducts.filter(product => product?._id !== productId)
-    );
-  } catch (error) {
-    console.error("Error deleting product:", error);
-  }
-};
+  };
+  // cloudinary image setup
 
   return (
     <Fragment>
@@ -141,26 +170,18 @@ const handleDelete = async (productId: string) => {
         </Card>
       </Col>
 
-      <Row className="d-flex">
+      <Row className="d-flex ">
         {product?.products?.map((product: any, index: number) => (
-          <Col xl={3}>
-            <div>
-              <Card
-                key={index}
-                className="custom-card"
-              >
+          <Col 
+            xl={3}
+          
+            id="draggable-left"
+            key={product._id}
+          >
+            <div className=" h-100">
+              <Card key={index} className="custom-card h-100">
                 <Card.Body className="rounded-3 mt-3">
-                  <Dropdown className="d-flex justify-content-between ">
-                    <div className="">
-                      <Button
-                        variant="light"
-                        className="btn btn-icon btn-wave waves-light no-caret"
-                        // onClick={toggleInput}
-                      >
-                        <i className="ri-edit-line text-primary fs-16"></i>
-                      </Button>
-                      {/* {textShow && <Form.Control type="text" id="input-text" style={{ width:"17%" }}/>} */}
-                    </div>
+                  <Dropdown className="d-flex justify-content-end">
                     <Dropdown.Toggle
                       variant="light"
                       className="btn btn-icon btn-wave waves-light no-caret"
@@ -182,10 +203,12 @@ const handleDelete = async (productId: string) => {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
+
                   <img
-                    src={layer}
+                    src={product?.image}
                     className="rounded mx-auto d-block"
                     alt="..."
+                    style={{ maxWidth: "100%",  }}
                   />
                   <p className="d-flex justify-content-end product-description fs-13 text-muted ">
                     {product.moddleNo}
@@ -201,9 +224,17 @@ const handleDelete = async (productId: string) => {
                     <span className="op-7 text-decoration-line-through">
                       MRP {product.originalPrice}
                     </span>
-                    <button className="btn btn-primary rounded-5">
+
+                    <a
+                      href={product.link}
+                      className="btn btn-primary rounded-5"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(product.link, "_blank");
+                      }}
+                    >
                       Buy Now
-                    </button>
+                    </a>
                   </div>
                 </Card.Footer>
               </Card>
@@ -235,9 +266,11 @@ const handleDelete = async (productId: string) => {
                     type="file"
                     id="input-file"
                     accept="image/jpeg ,image/png"
-                    {...register("image", { required: true })}
+                    // {...register("image", { required: true })}
+                    onChange={handleFile}
                   />
-                  <p className="text-danger ">{errors.image?.message}</p>
+                  {/* <img src={image} /> */}
+                  {/* <p className="text-danger ">{errors.image?.message}</p> */}
 
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Model Number
@@ -304,19 +337,19 @@ const handleDelete = async (productId: string) => {
                   <p className="text-danger ">
                     {errors.originalPrice?.message}
                   </p>
-                  {/* <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Product Link
                   </Form.Label>
                   <Form.Control
                     type="text"
                     id="input-text"
                     placeholder="Enter the product link"
-                    {...register("productLink", {
+                    {...register("link", {
                       required: true,
                       maxLength: 30,
                     })}
                   />
-                  <p className="text-danger ">{errors.productLink?.message}</p> */}
+                  <p className="text-danger ">{errors.link?.message}</p>
                 </Card.Body>
               </Card>
             </Col>
