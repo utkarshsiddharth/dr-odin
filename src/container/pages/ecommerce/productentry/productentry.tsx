@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import {
   Card,
   Col,
@@ -10,7 +10,6 @@ import {
   Toast,
   ToastContainer,
 } from "react-bootstrap";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -27,7 +26,7 @@ const schema = yup
     heading: yup.string().required(),
     price: yup.string().required(),
     originalPrice: yup.string().required(),
-    // image: yup.string().required(),
+    image: yup.string().required(),
     link: yup.string().required(),
   })
   .required();
@@ -41,14 +40,11 @@ const Productlist: FC<ProductlistProps> = () => {
   const cloud_name = "dgmpifw8b";
   const [image, setImage] = useState("");
 
- 
   useEffect(() => {
     fetchProducts();
-   
   }, []);
   //  token
   const token = localStorage.getItem("token");
-  // console.log(token);
   const config = {
     headers: {
       Authorization: token,
@@ -67,6 +63,7 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("error fetching products:", error);
     }
   };
+
   const {
     register,
     handleSubmit,
@@ -76,7 +73,7 @@ const Productlist: FC<ProductlistProps> = () => {
   });
   function handleFile(e: any) {
     const file = e.target.files[0];
-    console.log("file", file);
+    // console.log("file", file);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", preset_key);
@@ -108,22 +105,6 @@ const Productlist: FC<ProductlistProps> = () => {
     }
     setShow(true);
   };
-  // delete api
-  // const handleDelete = async (productId: string) => {
-  //   try {
-  //     await axios.delete(
-  //       `https://doctorodinbackend.onrender.com/product/${productId}`,
-  //       config
-  //     ).then(axios.get(
-  //       "https://doctorodinbackend.onrender.com/product",
-  //       config
-  //     );
-  //     // console.log("res", res);
-
-  //   } catch (error) {
-  //     console.error("Error deleting product:", error);
-  //   }
-  // };
   const handleDelete = async (productId: string) => {
     try {
       await axios.delete(
@@ -139,7 +120,6 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("Error deleting product:", error);
     }
   };
-  // cloudinary image setup
 
   return (
     <Fragment>
@@ -172,14 +152,13 @@ const Productlist: FC<ProductlistProps> = () => {
 
       <Row className="d-flex ">
         {product?.products?.map((product: any, index: number) => (
-          <Col 
-            xl={3}
-          
-            id="draggable-left"
-            key={product._id}
-          >
-            <div className=" h-100">
-              <Card key={index} className="custom-card h-100">
+          <Col xl={3} id="draggable-left" key={product._id}>
+            <div className="" style={{ height: "98%" }}>
+              <Card
+                key={index}
+                className="custom-card "
+                style={{ height: "94%" }}
+              >
                 <Card.Body className="rounded-3 mt-3">
                   <Dropdown className="d-flex justify-content-end">
                     <Dropdown.Toggle
@@ -206,17 +185,17 @@ const Productlist: FC<ProductlistProps> = () => {
 
                   <img
                     src={product?.image}
-                    className="rounded mx-auto d-block"
+                    className="rounded mx-auto d-block h-75 w-50"
                     alt="..."
-                    style={{ maxWidth: "100%",  }}
+                    // style={{ maxWidth: "60%",maxHeight:"40%"  }}
                   />
-                  <p className="d-flex justify-content-end product-description fs-13 text-muted ">
+                  <p className="d-flex justify-content-end fs-13 text-muted ">
                     {product.moddleNo}
                   </p>
                 </Card.Body>
 
-                <Card.Footer>
-                  <span className="fs-14 fw-bold">{product.heading}</span>
+                <Card.Footer className="pb-5">
+                  <span className="fs-14 fw-bold ">{product.heading}</span>
                   <p className="fs-14  text-primary fw-semibold mb-0 d-flex align-items-center">
                     ₹ {product.price}
                   </p>
@@ -266,11 +245,10 @@ const Productlist: FC<ProductlistProps> = () => {
                     type="file"
                     id="input-file"
                     accept="image/jpeg ,image/png"
-                    // {...register("image", { required: true })}
+                    {...register("image", { required: true })}
                     onChange={handleFile}
                   />
-                  {/* <img src={image} /> */}
-                  {/* <p className="text-danger ">{errors.image?.message}</p> */}
+                  <p className="text-danger ">{errors.image?.message}</p>
 
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Model Number
@@ -371,7 +349,7 @@ const Productlist: FC<ProductlistProps> = () => {
           <Toast
             onClose={() => setShow(false)}
             show={show}
-            delay={5000}
+            delay={2000}
             autohide
             bg="primary-transparent"
             className="toast colored-toast"
