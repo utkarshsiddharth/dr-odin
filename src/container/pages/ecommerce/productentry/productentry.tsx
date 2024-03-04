@@ -31,7 +31,15 @@ const schema = yup
   })
   .required();
 const Productlist: FC<ProductlistProps> = () => {
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({
+    heading: "",
+    image: "",
+    moddleNo: "",
+    name: "",
+    originalPrice: 0,
+    price: 0,
+    productLink: "",
+  });
   console.log("prodycut", product);
   const [show, setShow] = useState(false);
   // console.log("product", product);
@@ -67,6 +75,7 @@ const Productlist: FC<ProductlistProps> = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -97,6 +106,7 @@ const Productlist: FC<ProductlistProps> = () => {
         config
       );
       // console.log("data",data);
+      reset();
       console.log("res", res);
       fetchProducts();
       setXlShow(false);
@@ -120,7 +130,6 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("Error deleting product:", error);
     }
   };
-
   return (
     <Fragment>
       <Col>
