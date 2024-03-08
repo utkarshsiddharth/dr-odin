@@ -1,16 +1,16 @@
 export const MENUITEMS = [
   {
-    menutitle: "DASHBOARD",
+    menutitle: "DASHBOARD", 
     Items: [
       {
-        icon: <i className="side-menu__icon bx bx-home"></i>,
+        icon: <i className="side-menu__icon bx bx-home text-white"></i>,
         type: "link",
         Name: "",
         active: false,
         selected: false,
         title: "Dashboards",
         badge: "",
-        class: "badge bg-warning-transparent ms-2",
+        class: "badge bg-warning-transparent ms-2 ",
         path: `${import.meta.env.BASE_URL}dashboards/crm`,
       },
     ],
@@ -19,7 +19,7 @@ export const MENUITEMS = [
     menutitle: "PRODUCT CATALOG",
     Items: [
       {
-        icon: <i className="side-menu__icon bi bi-terminal-plus mb-2"></i>,
+        icon: <i className="side-menu__icon bi bi-terminal-plus mb-2 text-white"></i>,
         type: "link",
         Name: "",
         active: false,

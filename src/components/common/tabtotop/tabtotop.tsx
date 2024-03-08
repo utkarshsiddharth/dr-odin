@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const TabToTop = () => {
   const [BacktoTop, setBacktopTop] = useState("");
@@ -24,8 +24,8 @@ const TabToTop = () => {
         className={`scrollToTop ${BacktoTop}`}
       >
         <span className="arrow">
-<i className="ri-arrow-up-s-fill fs-20 pt-1"></i>
-</span>
+          <i className="ri-arrow-up-s-fill fs-20 pt-1"></i>
+        </span>
       </div>
     </>
   );

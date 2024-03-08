@@ -10,8 +10,7 @@ import {
   Toast,
   ToastContainer,
 } from "react-bootstrap";
-import desktoplogo from "../assets/images/brand-logos/desktop-logo.png";
-import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
+import drodin from "../assets/images/brand-logos/drodin.png";
 import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { LocalStorageBackup } from "../components/common/switcher/switcherdata/switcherdata";
@@ -51,7 +50,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
         const user = res?.data;
         setShow(true);
         localStorage.setItem("token", user?.token);
-        console.log(user);
+        // console.log(user);
         setTimeout(() => {
           routeChange();
         }, 1000);
@@ -100,16 +99,16 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
     <Fragment>
       <div>
         {show && (
-          <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4">
+          <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4 ">
             <Toast
               onClose={() => setShow(false)}
               show={show}
-              delay={5000}
+              delay={10000}
               autohide
-              bg="primary-transparent"
+              bg=""
               className="toast colored-toast"
             >
-              <Toast.Header className="toast-header bg-primary text-fixed-white mb-0">
+              <Toast.Header className="toast-header text-fixed-white mb-0 buyNow">
                 <img
                   className="bd-placeholder-img rounded me-2"
                   src={favicon}
@@ -117,24 +116,19 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                 />
                 <strong className="me-auto">Dr.Odin</strong>
               </Toast.Header>
-              <Toast.Body>{err ? err : "Successfully Logged In!!"}</Toast.Body>
+              <Toast.Body className="text-buyNoww bg-info-transparent" >{err ? err : "Successfully Logged In!!"}</Toast.Body>
             </Toast>
           </ToastContainer>
         )}
       </div>
-
       <div className="container">
         <div className="row justify-content-center align-items-center authentication authentication-basic h-100">
           <Col xxl={4} xl={5} lg={5} md={6} sm={8} className="col-12">
             <div className="my-5 d-flex justify-content-center">
-              <Link to={`${import.meta.env.BASE_URL}dashboards/crm/`}>
-                <img src={desktoplogo} alt="logo" className="desktop-logo" />
-                <img
-                  src={desktopdarklogo}
-                  alt="logo"
-                  className="desktop-dark"
-                />
-              </Link>
+              {/* <Link to={`${import.meta.env.BASE_URL}dashboards/crm/`}> */}
+              <img src={drodin} alt="logo" className="desktop-logo buyNow" />
+              <img src={drodin} alt="logo" className="desktop-dark" />
+              {/* </Link> */}
             </div>
             <Tab.Container id="left-tabs-example" defaultActiveKey="react">
               <Card>
@@ -236,36 +230,36 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                             </div>
                           </div>
                         </Col>
-                        <Col xl={12} className="d-grid mt-2">
+                        {/* <Col xl={12} className="d-grid mt-2"> */}
                           <Button
-                            variant="primary"
+                          variant="light"
                             onClick={() => {
                               handleLogin();
                             }}
                             size="lg"
-                            className="btn"
+                            className="buyNow text-white"
                           >
                             Sign In
                           </Button>
-                        </Col>
+                        {/* </Col> */}
                       </div>
-                      <div className="text-center">
+                      {/* <div className="text-center">
                         <p className="fs-12 text-muted mt-3">
                           Dont have an account?{" "}
                           <Link
                             to={`${
                               import.meta.env.BASE_URL
                             }authentication/signup/signupcover`}
-                            className="text-primary"
+                            className="text-white"
                           >
                             Sign Up
                           </Link>
                         </p>
-                      </div>
-                      <div className="text-center my-3 authentication-barrier">
+                      </div> */}
+                      {/* <div className="text-center my-3 authentication-barrier">
                         <span>OR</span>
-                      </div>
-                      <div className="btn-list text-center">
+                      </div> */}
+                      {/* <div className="btn-list text-center">
                         <Button variant="light" className="btn btn-icon">
                           <i className="ri-facebook-line fw-bold text-dark op-7"></i>
                         </Button>
@@ -275,7 +269,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                         <Button variant="light" className="btn btn-icon">
                           <i className="ri-twitter-line fw-bold text-dark op-7"></i>
                         </Button>
-                      </div>
+                      </div> */}
                     </div>
                   </Tab.Pane>
                   <Tab.Pane eventKey="firebase" className="border-0 pb-2">
@@ -351,7 +345,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                             </div>
                           </div>
                         </Col>
-                        <Col xl={12} className="d-grid mt-2">
+                        {/* <Col xl={12} className="d-grid mt-2">
                           <Button
                             variant="primary"
                             size="lg"
@@ -360,7 +354,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                           >
                             Sign In
                           </Button>
-                        </Col>
+                        </Col> */}
                       </div>
                       <div className="text-center">
                         <p className="fs-12 text-muted mt-3">

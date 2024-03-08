@@ -1,11 +1,14 @@
 /* eslint-disable react/jsx-key */
 import { FC, Fragment, useEffect, useState } from "react";
 import {
+  Button,
   Card,
   Col,
   Dropdown,
   Form,
+  InputGroup,
   Modal,
+  Pagination,
   Row,
   Toast,
   ToastContainer,
@@ -15,9 +18,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { _ } from "gridjs-react";
-
 interface ProductlistProps {
-  id: string;
+  id?: string;
 }
 const schema = yup
   .object({
@@ -39,15 +41,17 @@ const Productlist: FC<ProductlistProps> = () => {
     originalPrice: 0,
     price: 0,
     productLink: "",
+    products: [],
   });
   console.log("prodycut", product);
   const [show, setShow] = useState(false);
-  // console.log("product", product);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(8);
+  const [id, setId] = useState("");
   const [xlShow, setXlShow] = useState(false);
   const preset_key = "ngujniat";
   const cloud_name = "dgmpifw8b";
   const [image, setImage] = useState("");
-
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -76,6 +80,7 @@ const Productlist: FC<ProductlistProps> = () => {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -97,8 +102,14 @@ const Productlist: FC<ProductlistProps> = () => {
   }
   // create add api
   const formSubmit = async (data: any) => {
+    if (data.originalPrice <= data.price) {
+      setError("originalPrice", {
+        type: "manual",
+        message: "Original price must be greater than actual price.",
+      });
+      return;
+    }  
     data.image = image;
-    console.log("data", data);
     try {
       const res = await axios.post(
         "https://doctorodinbackend.onrender.com/product",
@@ -130,12 +141,22 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("Error deleting product:", error);
     }
   };
+  // function handleChange(event: any) {
+  //   setId(event.target.value);
+  //   console.log("dataswfa", id);
+  // }
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = product.products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   return (
     <Fragment>
       <Col>
         <Card.Header className="d-flex align-items-center justify-content-between flex-wrap gap-3  p-3"></Card.Header>
       </Col>
-
       <Col xl={12}>
         <Card className="custom-card">
           <Card.Body className="">
@@ -145,8 +166,25 @@ const Productlist: FC<ProductlistProps> = () => {
               </div>
               <div className="col-sm-auto">
                 <div className="d-flex flex-sm-row">
+                  <div className="d-flex flex-column flex-sm-row" role="search">
+                    <InputGroup className="me-2 mt-2">
+                      <Form.Control
+                        type="text"
+                        className="bg-light btn-sm border-0 text-primary"
+                        placeholder="Search Product"
+                      />
+                      <Button
+                        variant=""
+                        className="btn btn-sm bg-light"
+                        type="button"
+                      >
+                        <i className="ri-search-line text-muted"></i>
+                      </Button>
+                    </InputGroup>
+                  </div>
+
                   <button
-                    className="btn btn-primary btn-sm text-nowrap mt-2"
+                    className="btn text-white buyNow btn-sm text-nowrap mt-2"
                     type="submit"
                     onClick={() => setXlShow(true)}
                   >
@@ -158,79 +196,84 @@ const Productlist: FC<ProductlistProps> = () => {
           </Card.Body>
         </Card>
       </Col>
-
-      <Row className="d-flex ">
-        {product?.products?.map((product: any, index: number) => (
-          <Col xl={3} id="draggable-left" key={product._id}>
-            <div className="" style={{ height: "98%" }}>
-              <Card
-                key={index}
-                className="custom-card "
-                style={{ height: "94%" }}
-              >
-                <Card.Body className="rounded-3 mt-3">
-                  <Dropdown className="d-flex justify-content-end">
-                    <Dropdown.Toggle
-                      variant="light"
-                      className="btn btn-icon btn-wave waves-light no-caret"
-                      type="button"
-                    >
-                      <i className="bi bi-three-dots-vertical text-primary fs-14 "></i>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        href={`/editform/editform/${product?._id}`}
+      <div>
+        <Row className="d-flex ">
+          {currentProducts.map((product: any, index: number) => (
+            <Col xl={3} id="draggable-left">
+              <div className="" style={{ height: "98%" }}>
+                <Card
+                  key={index}
+                  className="custom-card "
+                  style={{ height: "94%" }}
+                >
+                  <Card.Body className="rounded-3 mt-3">
+                    <Dropdown className="d-flex justify-content-end">
+                      {/* <Form.Control type="text" className="border border-primary text-nowrap" style={{width:"16%"}} 
+                      onClick={handleChange}
+                       /> */}
+                      <Dropdown.Toggle
+                        variant="light"
+                        className="btn btn-icon btn-wave waves-light no-caret"
+                        type="button"
                       >
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        href="#"
-                        onClick={() => handleDelete(product._id)}
+                        <i className="bi bi-three-dots-vertical buyNoww fs-14 "></i>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item
+                        className="text-info  "
+                          href={`/editform/editform/${product?._id}`}
+                        >
+                          Edit
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                         className="text-info"
+                         
+                          href="#"
+                          onClick={() => handleDelete(product._id)}
+                        >
+                          Delete
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+
+                    <img
+                      src={product?.image}
+                      className="rounded mx-auto d-block h-75 w-50"
+                      alt="..."
+                      // style={{ maxWidth: "60%",maxHeight:"40%"  }}
+                    />
+                    <p className="d-flex justify-content-end fs-13 text-muted ">
+                      {product.moddleNo}
+                    </p>
+                  </Card.Body>
+
+                  <Card.Footer className="pb-5">
+                    <span className="fs-14 fw-bold ">{product.heading}</span>
+                    <p className="fs-14 buyNoww fw-semibold mb-0 d-flex align-items-center">
+                      ₹ {product.price}
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      <span className="op-7 text-decoration-line-through">
+                        MRP {product.originalPrice}
+                      </span>
+                      <a 
+                        href={product.link}
+                        className="btn  rounded-5 buyNow text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.open(product.link, "_blank");
+                        }}
                       >
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-                  <img
-                    src={product?.image}
-                    className="rounded mx-auto d-block h-75 w-50"
-                    alt="..."
-                    // style={{ maxWidth: "60%",maxHeight:"40%"  }}
-                  />
-                  <p className="d-flex justify-content-end fs-13 text-muted ">
-                    {product.moddleNo}
-                  </p>
-                </Card.Body>
-
-                <Card.Footer className="pb-5">
-                  <span className="fs-14 fw-bold ">{product.heading}</span>
-                  <p className="fs-14  text-primary fw-semibold mb-0 d-flex align-items-center">
-                    ₹ {product.price}
-                  </p>
-                  <div className="d-flex justify-content-between">
-                    <span className="op-7 text-decoration-line-through">
-                      MRP {product.originalPrice}
-                    </span>
-
-                    <a
-                      href={product.link}
-                      className="btn btn-primary rounded-5"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(product.link, "_blank");
-                      }}
-                    >
-                      Buy Now
-                    </a>
-                  </div>
-                </Card.Footer>
-              </Card>
-            </div>
-          </Col>
-        ))}
-      </Row>
-
+                        Buy Now
+                      </a>
+                    </div>
+                  </Card.Footer>
+                </Card>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
       <Modal
         size="xl"
         show={xlShow}
@@ -253,7 +296,7 @@ const Productlist: FC<ProductlistProps> = () => {
                   <Form.Control
                     type="file"
                     id="input-file"
-                    accept="image/jpeg ,image/png"
+                    // accept="image/jpeg ,image/png"
                     {...register("image", { required: true })}
                     onChange={handleFile}
                   />
@@ -294,6 +337,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     {...register("heading", { required: true, maxLength: 20 })}
                   />
                   <p className="text-danger ">{errors.heading?.message}</p>
+
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Price
                   </Form.Label>
@@ -307,7 +351,9 @@ const Productlist: FC<ProductlistProps> = () => {
                       maxLength: 10,
                     })}
                   />
+
                   <p className="text-danger ">{errors.price?.message}</p>
+
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Original Price
                   </Form.Label>
@@ -321,9 +367,10 @@ const Productlist: FC<ProductlistProps> = () => {
                       maxLength: 10,
                     })}
                   />
-                  <p className="text-danger ">
+                    <p className="text-danger">
                     {errors.originalPrice?.message}
-                  </p>
+                    </p>
+                
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Product Link
                   </Form.Label>
@@ -343,7 +390,7 @@ const Productlist: FC<ProductlistProps> = () => {
           </Modal.Body>
           <Modal.Footer>
             <button
-              className="btn btn-primary btn-sm text-nowrap mt-2"
+              className="btn buyNow text-white btn-sm text-nowrap mt-2"
               type="submit"
               // onClick={() => setXlShow(true)}
             >
@@ -352,7 +399,6 @@ const Productlist: FC<ProductlistProps> = () => {
           </Modal.Footer>
         </form>
       </Modal>
-
       {show && (
         <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4">
           <Toast
@@ -363,7 +409,7 @@ const Productlist: FC<ProductlistProps> = () => {
             bg="primary-transparent"
             className="toast colored-toast"
           >
-            <Toast.Header className="toast-header bg-primary text-fixed-white mb-0">
+            <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
               {/* <img
                 className="bd-placeholder-img rounded me-2"
                 src={favicon}
@@ -371,7 +417,7 @@ const Productlist: FC<ProductlistProps> = () => {
               /> */}
               <strong className="me-auto">Dr.Odin</strong>
             </Toast.Header>
-            <Toast.Body>
+            <Toast.Body className="text-buyNoww bg-info-transparent">
               {Object.keys(errors).length === 0
                 ? "Card Added Successfully!!"
                 : "Please fill required fields"}
@@ -379,6 +425,42 @@ const Productlist: FC<ProductlistProps> = () => {
           </Toast>
         </ToastContainer>
       )}
+      <Col xl={12}>
+        <Card.Body className="d-flex justify-content-end  card-body d-flex flex-wrap">
+          <nav aria-label="..." className="me-3 mt-2 ">
+            <Pagination className="pagination">
+              <Pagination.Item
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Previous
+              </Pagination.Item>
+              {Array.from({
+                length: Math.ceil(product.products.length / productsPerPage),
+              }).map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={index + 1 === currentPage}
+                  onClick={() => paginate(index + 1)}
+                  className=""
+                >
+                  {index + 1}
+                  
+                </Pagination.Item>
+              ))}
+              <Pagination.Item
+                disabled={
+                  currentPage ===
+                  Math.ceil(product.products.length / productsPerPage)
+                }
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </Pagination.Item>
+            </Pagination>
+          </nav>
+        </Card.Body>
+      </Col>
     </Fragment>
   );
 };

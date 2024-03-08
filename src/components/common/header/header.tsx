@@ -1,4 +1,4 @@
-import { Fragment,  useState } from "react";
+import { Fragment, useState ,} from "react";
 import {
   Button,
   ButtonGroup,
@@ -8,15 +8,15 @@ import {
   Modal,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import { MENUITEMS } from "../sidebar/sidemenu/sidemenu";
+import { MENUITEMS } from "../sidebar/sidemenu/sidemenu";
 import { connect } from "react-redux";
 import { ThemeChanger } from "../../../redux/action";
-// import desktoplogo from "../../../assets/images/brand-logos/desktop-logo.png";
-// import togglelogo from "../../../assets/images/brand-logos/toggle-logo.png";
-// import desktopdark from "../../../assets/images/brand-logos/desktop-dark.png";
-// import toggledark from "../../../assets/images/brand-logos/toggle-dark.png";
-// import desktopwhite from "../../../assets/images/brand-logos/desktop-white.png";
-// import togglewhite from "../../../assets/images/brand-logos/toggle-white.png";
+import desktoplogo from "../../../assets/images/brand-logos/desktop-logo.png";
+import togglelogo from "../../../assets/images/brand-logos/toggle-logo.png";
+import desktopdark from "../../../assets/images/brand-logos/desktop-dark.png";
+import toggledark from "../../../assets/images/brand-logos/toggle-dark.png";
+import desktopwhite from "../../../assets/images/brand-logos/desktop-white.png";
+import togglewhite from "../../../assets/images/brand-logos/toggle-white.png";
 // import us from "../../../assets/images/flags/us_flag.jpg";
 // import spain from "../../../assets/images/flags/spain_flag.jpg";
 // import french from "../../../assets/images/flags/french_flag.jpg";
@@ -38,9 +38,9 @@ import { ThemeChanger } from "../../../redux/action";
 // import google from "../../../assets/images/apps/google.png";
 // import translate from "../../../assets/images/apps/translate.png";
 // import googlesheets from "../../../assets/images/apps/google-sheets.png";
-// import store from "../../../redux/store";
+import store from "../../../redux/store";
 
-const Header = ({ local_varaiable, ThemeChanger }: any) => {
+const Header = ({ ThemeChanger}:any) => {
   // for search modal
   const [show, setShow] = useState(false);
 
@@ -89,27 +89,27 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
     const i: any = [];
     const allElement2: any = [];
 
-    // MENUITEMS.map((mainlevel) => {
-    //   if (mainlevel.Items) {
-    //     setShow1(true);
-    //     mainlevel.Items.map((sublevel) => {
-    //       if (sublevel.children) {
-    //         sublevel.children.map((sublevel1: any) => {
-    //           i.push(sublevel1);
-    //           if (sublevel1.children) {
-    //             sublevel1.children.map((sublevel2: any) => {
-    //               i.push(sublevel2);
-    //               return sublevel2;
-    //             });
-    //           }
-    //           return sublevel1;
-    //         });
-    //       }
-    //       return sublevel;
-    //     });
-    //   }
-    //   return mainlevel;
-    // });
+    MENUITEMS.map((mainlevel) => {
+      if (mainlevel.Items) {
+        setShow1(true);
+        mainlevel.Items.map((sublevel) => {
+          if (sublevel.children) {
+            sublevel.children.map((sublevel1: any) => {
+              i.push(sublevel1);
+              if (sublevel1.children) {
+                sublevel1.children.map((sublevel2: any) => {
+                  i.push(sublevel2);
+                  return sublevel2;
+                });
+              }
+              return sublevel1;
+            });
+          }
+          return sublevel;
+        });
+      }
+      return mainlevel;
+    });
     for (const allElement of i) {
       if (allElement.title.toLowerCase().includes(inputvalue.toLowerCase())) {
         if (
@@ -147,7 +147,7 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
   //   }
   // };
 
-  //Dark Model
+  // // Dark Model
   // const ToggleDark = () => {
   //   ThemeChanger({
   //     ...local_varaiable,
@@ -183,151 +183,151 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
   //   }
   // };
 
-  // function menuClose() {
-  //   const theme = store.getState();
-  //   ThemeChanger({ ...theme, toggled: "close" });
-  // }
+  function menuClose() {
+    const theme = store.getState();
+    ThemeChanger({ ...theme, toggled: "close" });
+  }
 
-  // const toggleSidebar = () => {
-  //   const theme = store.getState();
-  //   const sidemenuType = theme.dataNavLayout;
-  //   if (window.innerWidth >= 992) {
-  //     if (sidemenuType === "vertical") {
-  //       const verticalStyle = theme.dataVerticalStyle;
-  //       const navStyle = theme.dataNavStyle;
-  //       switch (verticalStyle) {
-  //         // closed
-  //         case "closed":
-  //           ThemeChanger({ ...theme, dataNavStyle: "" });
-  //           if (theme.toggled === "close-menu-close") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "close-menu-close" });
-  //           }
-  //           break;
-  //         // icon-overlay
-  //         case "overlay":
-  //           ThemeChanger({ ...theme, dataNavStyle: "" });
-  //           if (theme.toggled === "icon-overlay-close") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             if (window.innerWidth >= 992) {
-  //               ThemeChanger({ ...theme, toggled: "icon-overlay-close" });
-  //             }
-  //           }
-  //           break;
-  //         // icon-text
-  //         case "icontext":
-  //           ThemeChanger({ ...theme, dataNavStyle: "" });
-  //           if (theme.toggled === "icon-text-close") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "icon-text-close" });
-  //           }
-  //           break;
-  //         // doublemenu
-  //         case "doublemenu":
-  //           ThemeChanger({ ...theme, dataNavStyle: "" });
-  //           if (theme.toggled === "double-menu-open") {
-  //             ThemeChanger({ ...theme, toggled: "double-menu-close" });
-  //           } else {
-  //             const sidemenu = document.querySelector(
-  //               ".side-menu__item.active"
-  //             );
-  //             if (sidemenu) {
-  //               ThemeChanger({ ...theme, toggled: "double-menu-open" });
-  //               if (sidemenu.nextElementSibling) {
-  //                 sidemenu.nextElementSibling.classList.add(
-  //                   "double-menu-active"
-  //                 );
-  //               } else {
-  //                 ThemeChanger({ ...theme, toggled: "" });
-  //               }
-  //             }
-  //           }
+  const toggleSidebar = () => {
+    const theme = store.getState();
+    const sidemenuType = theme.dataNavLayout;
+    if (window.innerWidth >= 992) {
+      if (sidemenuType === "vertical") {
+        const verticalStyle = theme.dataVerticalStyle;
+        const navStyle = theme.dataNavStyle;
+        switch (verticalStyle) {
+          // closed
+          case "closed":
+            ThemeChanger({ ...theme, dataNavStyle: "" });
+            if (theme.toggled === "close-menu-close") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "close-menu-close" });
+            }
+            break;
+          // icon-overlay
+          case "overlay":
+            ThemeChanger({ ...theme, dataNavStyle: "" });
+            if (theme.toggled === "icon-overlay-close") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              if (window.innerWidth >= 992) {
+                ThemeChanger({ ...theme, toggled: "icon-overlay-close" });
+              }
+            }
+            break;
+          // icon-text
+          case "icontext":
+            ThemeChanger({ ...theme, dataNavStyle: "" });
+            if (theme.toggled === "icon-text-close ") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "icon-text-close" });
+            }
+            break;
+          // doublemenu
+          case "doublemenu":
+            ThemeChanger({ ...theme, dataNavStyle: "" });
+            if (theme.toggled === "double-menu-open") {
+              ThemeChanger({ ...theme, toggled: "double-menu-close" });
+            } else {
+              const sidemenu = document.querySelector(
+                ".side-menu__item.active"
+              );
+              if (sidemenu) {
+                ThemeChanger({ ...theme, toggled: "double-menu-open" });
+                if (sidemenu.nextElementSibling) {
+                  sidemenu.nextElementSibling.classList.add(
+                    "double-menu-active"
+                  );
+                } else {
+                  ThemeChanger({ ...theme, toggled: "" });
+                }
+              }
+            }
 
-  //           // doublemenu(ThemeChanger);
-  //           break;
-  //         // detached
-  //         case "detached":
-  //           if (theme.toggled === "detached-close") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "detached-close" });
-  //           }
-  //           break;
-  //         // default
-  //         case "default":
-  //           ThemeChanger({ ...theme, toggled: "" });
-  //       }
-  //       switch (navStyle) {
-  //         case "menu-click":
-  //           if (theme.toggled === "menu-click-closed") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "menu-click-closed" });
-  //           }
-  //           break;
-  //         // icon-overlay
-  //         case "menu-hover":
-  //           if (theme.toggled === "menu-hover-closed") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "menu-hover-closed" });
-  //           }
-  //           break;
-  //         case "icon-click":
-  //           if (theme.toggled === "icon-click-closed") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "icon-click-closed" });
-  //           }
-  //           break;
-  //         case "icon-hover":
-  //           if (theme.toggled === "icon-hover-closed") {
-  //             ThemeChanger({ ...theme, toggled: "" });
-  //           } else {
-  //             ThemeChanger({ ...theme, toggled: "icon-hover-closed" });
-  //           }
-  //           break;
-  //       }
-  //     }
-  //   } else {
-  //     if (theme.toggled === "close") {
-  //       ThemeChanger({ ...theme, toggled: "open" });
+            // doublemenu(ThemeChanger);
+            break;
+          // detached
+          case "detached":
+            if (theme.toggled === "detached-close") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "detached-close" });
+            }
+            break;
+          // default
+          case "default":
+            ThemeChanger({ ...theme, toggled: "" });
+        }
+        switch (navStyle) {
+          case "menu-click":
+            if (theme.toggled === "menu-click-closed") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "menu-click-closed" });
+            }
+            break;
+          // icon-overlay
+          case "menu-hover":
+            if (theme.toggled === "menu-hover-closed") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "menu-hover-closed" });
+            }
+            break;
+          case "icon-click":
+            if (theme.toggled === "icon-click-closed") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "icon-click-closed" });
+            }
+            break;
+          case "icon-hover":
+            if (theme.toggled === "icon-hover-closed") {
+              ThemeChanger({ ...theme, toggled: "" });
+            } else {
+              ThemeChanger({ ...theme, toggled: "icon-hover-closed" });
+            }
+            break;
+        }
+      }
+    } else {
+      if (theme.toggled === "close") {
+        ThemeChanger({ ...theme, toggled: "open" });
 
-  //       setTimeout(() => {
-  //         if (theme.toggled == "open") {
-  //           const overlay = document.querySelector("#responsive-overlay");
+        setTimeout(() => {
+          if (theme.toggled == "open") {
+            const overlay = document.querySelector("#responsive-overlay");
 
-  //           if (overlay) {
-  //             overlay.classList.add("active");
-  //             overlay.addEventListener("click", () => {
-  //               const overlay = document.querySelector("#responsive-overlay");
+            if (overlay) {
+              overlay.classList.add("active");
+              overlay.addEventListener("click", () => {
+                const overlay = document.querySelector("#responsive-overlay");
 
-  //               if (overlay) {
-  //                 overlay.classList.remove("active");
-  //                 menuClose();
-  //               }
-  //             });
-  //           }
-  //         }
+                if (overlay) {
+                  overlay.classList.remove("active");
+                  menuClose();
+                }
+              });
+            }
+          }
 
-  //         window.addEventListener("resize", () => {
-  //           if (window.screen.width >= 992) {
-  //             const overlay = document.querySelector("#responsive-overlay");
+          window.addEventListener("resize", () => {
+            if (window.screen.width >= 992) {
+              const overlay = document.querySelector("#responsive-overlay");
 
-  //             if (overlay) {
-  //               overlay.classList.remove("active");
-  //             }
-  //           }
-  //         });
-  //       }, 100);
-  //     } else {
-  //       ThemeChanger({ ...theme, toggled: "close" });
-  //     }
-  //   }
-  // };
+              if (overlay) {
+                overlay.classList.remove("active");
+              }
+            }
+          });
+        }, 100);
+      } else {
+        ThemeChanger({ ...theme, toggled: "close" });
+      }
+    }
+  };
   // const cartProduct = [
   //   {
   //     id: 1,
@@ -383,53 +383,53 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
   //   setCartItems(updatedCart);
   //   setCartItemCount(updatedCart.length);
   // };
-  const initialNotifications = [
-    {
-      id: 1,
-      avatarColor: "primary",
-      icon: "ti-gift",
-      text1: "Your Order Has Been Shipped",
-      text2: "Order No: 123456 Has Shipped To YourDelivery Address",
-      class: "",
-      class1: "",
-    },
-    {
-      id: 2,
-      avatarColor: "secondary",
-      icon: "ti-discount-2",
-      text1: "Discount Available",
-      text2: "Discount Available On Selected Products",
-      class: "",
-      class1: "",
-    },
-    {
-      id: 3,
-      avatarColor: "pink",
-      icon: "ti-user-check",
-      text1: "Account Has Been Verified",
-      text2: "Your Account Has Been Verified Successfully",
-      class: "",
-      class1: "",
-    },
-    {
-      id: 4,
-      avatarColor: "warning",
-      icon: "ti-circle-check",
-      text1: "Order Placed ",
-      text2: "Order Placed Successflly",
-      class: "text-warning",
-      class1: " ID:1116773",
-    },
-    {
-      id: 5,
-      avatarColor: "success",
-      icon: "ti-clock",
-      text1: "Order Delayed",
-      text2: "Order Delayed Unfortunately",
-      class: "text-success",
-      class1: " ID:7731116",
-    },
-  ];
+  // const initialNotifications = [
+  //   {
+  //     id: 1,
+  //     avatarColor: "primary",
+  //     icon: "ti-gift",
+  //     text1: "Your Order Has Been Shipped",
+  //     text2: "Order No: 123456 Has Shipped To YourDelivery Address",
+  //     class: "",
+  //     class1: "",
+  //   },
+  //   {
+  //     id: 2,
+  //     avatarColor: "secondary",
+  //     icon: "ti-discount-2",
+  //     text1: "Discount Available",
+  //     text2: "Discount Available On Selected Products",
+  //     class: "",
+  //     class1: "",
+  //   },
+  //   {
+  //     id: 3,
+  //     avatarColor: "pink",
+  //     icon: "ti-user-check",
+  //     text1: "Account Has Been Verified",
+  //     text2: "Your Account Has Been Verified Successfully",
+  //     class: "",
+  //     class1: "",
+  //   },
+  //   {
+  //     id: 4,
+  //     avatarColor: "warning",
+  //     icon: "ti-circle-check",
+  //     text1: "Order Placed ",
+  //     text2: "Order Placed Successflly",
+  //     class: "text-warning",
+  //     class1: " ID:1116773",
+  //   },
+  //   {
+  //     id: 5,
+  //     avatarColor: "success",
+  //     icon: "ti-clock",
+  //     text1: "Order Delayed",
+  //     text2: "Order Delayed Unfortunately",
+  //     class: "text-success",
+  //     class1: " ID:7731116",
+  //   },
+  // ];
 
   // const [notifications, setNotifications] = useState([...initialNotifications]);
 
@@ -441,7 +441,7 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
   // };
   return (
     <Fragment>
-      {/* <header className="app-header">
+      <header className="app-header">
         <div className="main-header-container container-fluid">
           <div className="header-content-left">
             <div className="header-element">
@@ -476,7 +476,7 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
             </div>
           </div>
 
-          <div className="header-content-right">
+          {/* <div className="header-content-right">
             <div className="header-element header-search">
               <Link
                 to="#"
@@ -1057,9 +1057,9 @@ const Header = ({ local_varaiable, ThemeChanger }: any) => {
                 <i className="bx bx-cog header-link-icon"></i>
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
-      </header> */}
+      </header>
       <Modal
         className="modal fade"
         id="searchModal"

@@ -42,7 +42,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             />
              <Route
               path={`${import.meta.env.BASE_URL}editform/editform/:productId`}
-              element={<EditForm />}
+              element={<EditForm  />}
             />
           </Route>
         </Routes>

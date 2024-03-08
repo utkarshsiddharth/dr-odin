@@ -16,8 +16,8 @@
     "plugins": [
         "@typescript-eslint",
         "react"
-    ],
-     "rules": {"no-multiple-empty-lines":["error", { "max": 1, "maxEOF": 1 }],
+    ],    
+    "rules": {"no-multiple-empty-lines":["error", { "max": 1, "maxEOF": 1 }],
     "no-console":"off",
     "eol-last":"error",
     "block-spacing":"error",

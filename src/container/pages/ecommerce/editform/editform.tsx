@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 interface OrdersProps {
-  id: string;
-  onClose: () => void;
+  id?: string;
+  onClose?: () => void;
 }
 const schema = yup
   .object({
@@ -87,6 +87,7 @@ const Orders: FC<OrdersProps> = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -103,6 +104,14 @@ const Orders: FC<OrdersProps> = () => {
     reset();
   };
   const onSubmit = async (data: any) => {
+    if (data.originalPrice <= data.price) {
+      setError("originalPrice", {
+        type: "manual",
+        message: "Original price must be greater than actual price.",
+      });
+      return;
+    }  
+
     data.image = image;
     try {
       await axios.put(
@@ -135,14 +144,14 @@ const Orders: FC<OrdersProps> = () => {
                 <div className="col-sm-auto">
                   <div className="d-flex flex-sm-row">
                     <button
-                      className="btn btn-primary btn-sm text-nowrap mt-2"
+                      className="btn buyNow text-white btn-sm text-nowrap mt-2"
                       type="button"
                       onClick={handleCancel}
                     >
                       Cancel
                     </button>
                     <button
-                      className="btn btn-primary btn-sm text-nowrap mt-2 ms-2"
+                      className="btn buyNow text-white btn-sm text-nowrap mt-2 ms-2"
                       type="submit"
                     >
                       Save Changes
@@ -158,20 +167,24 @@ const Orders: FC<OrdersProps> = () => {
           <Col xl={12}>
             <Card className="custom-card">
               <Card.Body>
-                <Form.Label htmlFor="input-file" className="fs-14">
-                  Image Upload
-                </Form.Label>
-                <Form.Control
-                  type="file"
-                  id="input-file"
-                  accept="image/jpeg ,image/png"
-                  required
-                  // {...register("image",{required:true})}
-                  onChange={handleFile}
-                />
-                {/* <p className="text-danger">{errors.image?.message}</p> */}
+                <div>
+                  <Form.Label htmlFor="input-file" className="fs-14">
+                    Image Upload
+                  </Form.Label>
+                  <Form.Control
+                    type="file"
+                    id="input-file"
+                    required
+                    onChange={handleFile}
+                  />
+                  <img
+                    src={formData?.image}
+                    style={{ height: "6%", width: "8%" }}
+                    alt="done"
+                  ></img>
+                </div>
 
-                <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                <Form.Label htmlFor="input-text " className="mt-4 fs-14">
                   Model Number
                 </Form.Label>
                 <Form.Control
@@ -196,7 +209,7 @@ const Orders: FC<OrdersProps> = () => {
                 />
                 <p className="text-danger">{errors.name?.message}</p>
 
-                <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                <Form.Label htmlFor="input-text" className="mt-2 fs-14">
                   Heading
                 </Form.Label>
                 <Form.Control
@@ -208,7 +221,7 @@ const Orders: FC<OrdersProps> = () => {
                 <p className="text-danger">{errors.heading?.message}</p>
 
                 <Form.Label htmlFor="input-text " className="mt-2 fs-14">
-                  Price
+                  Actual Price
                 </Form.Label>
                 <Form.Control
                   type="number"
@@ -233,7 +246,7 @@ const Orders: FC<OrdersProps> = () => {
                     maxLength: 10,
                   })}
                 />
-                <p className="text-danger">{errors.originalPrice?.message}</p>
+              <p className="text-danger">{errors.originalPrice?.message}</p>
 
                 <Form.Label htmlFor="input-text" className="mt-2 fs-14">
                   Product Link
@@ -263,7 +276,7 @@ const Orders: FC<OrdersProps> = () => {
             bg="primary-transparent"
             className="toast colored-toast"
           >
-            <Toast.Header className="toast-header bg-primary text-fixed-white mb-0">
+            <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
               {/* <img
                 className="bd-placeholder-img rounded me-2"
                 src={favicon}
@@ -271,7 +284,7 @@ const Orders: FC<OrdersProps> = () => {
               /> */}
               <strong className="me-auto">Dr.Odin</strong>
             </Toast.Header>
-            <Toast.Body>
+            <Toast.Body className="text-buyNoww bg-info-transparent">
               {Object.keys(errors).length === 0
                 ? "Fields are updated sucessfully!!"
                 : "Please fill required fields"}
