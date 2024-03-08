@@ -47,7 +47,7 @@ const Productlist: FC<ProductlistProps> = () => {
   const [show, setShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
-  const [id, setId] = useState("");
+  // const [id, setId] = useState("");
   const [xlShow, setXlShow] = useState(false);
   const preset_key = "ngujniat";
   const cloud_name = "dgmpifw8b";
@@ -184,7 +184,7 @@ const Productlist: FC<ProductlistProps> = () => {
                   </div>
 
                   <button
-                    className="btn text-white buyNow btn-sm text-nowrap mt-2"
+                    className="btn text-white buyNow btn-sm text-nowrap mt-2 ms-2"
                     type="submit"
                     onClick={() => setXlShow(true)}
                   >
@@ -197,7 +197,7 @@ const Productlist: FC<ProductlistProps> = () => {
         </Card>
       </Col>
       <div>
-        <Row className="d-flex ">
+        <Row className="d-flex overflow-auto">
           {currentProducts.map((product: any, index: number) => (
             <Col xl={3} id="draggable-left">
               <div className="" style={{ height: "98%" }}>

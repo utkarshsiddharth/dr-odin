@@ -8,7 +8,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { MENUITEMS } from "../sidebar/sidemenu/sidemenu";
+// import { MENUITEMS } from "../sidebar/sidemenu/sidemenu";
 import { connect } from "react-redux";
 import { ThemeChanger } from "../../../redux/action";
 import desktoplogo from "../../../assets/images/brand-logos/desktop-logo.png";
@@ -89,27 +89,27 @@ const Header = ({ ThemeChanger}:any) => {
     const i: any = [];
     const allElement2: any = [];
 
-    MENUITEMS.map((mainlevel) => {
-      if (mainlevel.Items) {
-        setShow1(true);
-        mainlevel.Items.map((sublevel) => {
-          if (sublevel.children) {
-            sublevel.children.map((sublevel1: any) => {
-              i.push(sublevel1);
-              if (sublevel1.children) {
-                sublevel1.children.map((sublevel2: any) => {
-                  i.push(sublevel2);
-                  return sublevel2;
-                });
-              }
-              return sublevel1;
-            });
-          }
-          return sublevel;
-        });
-      }
-      return mainlevel;
-    });
+    // MENUITEMS.map((mainlevel) => {
+    //   if (mainlevel.Items) {
+    //     setShow1(true);
+    //     mainlevel.Items.map((sublevel) => {
+    //       if (sublevel.children) {
+    //         sublevel.children.map((sublevel1: any) => {
+    //           i.push(sublevel1);
+    //           if (sublevel1.children) {
+    //             sublevel1.children.map((sublevel2: any) => {
+    //               i.push(sublevel2);
+    //               return sublevel2;
+    //             });
+    //           }
+    //           return sublevel1;
+    //         });
+    //       }
+    //       return sublevel;
+    //     });
+    //   }
+    //   return mainlevel;
+    // });
     for (const allElement of i) {
       if (allElement.title.toLowerCase().includes(inputvalue.toLowerCase())) {
         if (
