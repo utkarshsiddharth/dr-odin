@@ -11,12 +11,6 @@ import { Link } from "react-router-dom";
 // import { MENUITEMS } from "../sidebar/sidemenu/sidemenu";
 import { connect } from "react-redux";
 import { ThemeChanger } from "../../../redux/action";
-import desktoplogo from "../../../assets/images/brand-logos/desktop-logo.png";
-import togglelogo from "../../../assets/images/brand-logos/toggle-logo.png";
-import desktopdark from "../../../assets/images/brand-logos/desktop-dark.png";
-import toggledark from "../../../assets/images/brand-logos/toggle-dark.png";
-import desktopwhite from "../../../assets/images/brand-logos/desktop-white.png";
-import togglewhite from "../../../assets/images/brand-logos/toggle-white.png";
 // import us from "../../../assets/images/flags/us_flag.jpg";
 // import spain from "../../../assets/images/flags/spain_flag.jpg";
 // import french from "../../../assets/images/flags/french_flag.jpg";
@@ -445,22 +439,22 @@ const Header = ({ ThemeChanger}:any) => {
         <div className="main-header-container container-fluid">
           <div className="header-content-left">
             <div className="header-element">
-              <div className="horizontal-logo">
-                <Link
+              <div className="horizontal-logo buyNow mt-2 mb-2 " >
+                {/* <Link
                   to={`${import.meta.env.BASE_URL}dashboards/crm/`}
                   className="header-logo"
                 >
-                  <img src={desktoplogo} alt="logo" className="desktop-logo" />
-                  <img src={togglelogo} alt="logo" className="toggle-logo" />
-                  <img src={desktopdark} alt="logo" className="desktop-dark" />
-                  <img src={toggledark} alt="logo" className="toggle-dark" />
+                  <img src={drodin} alt="logo" className="desktop-logo" />
+                  <img src={drodin} alt="logo" className="toggle-logo" />
+                  <img src={drodin} alt="logo" className="desktop-dark" />
+                  <img src={drodin} alt="logo" className="toggle-dark" />
                   <img
-                    src={desktopwhite}
+                    src={drodin}
                     alt="logo"
                     className="desktop-white"
                   />
-                  <img src={togglewhite} alt="logo" className="toggle-white" />
-                </Link>
+                  <img src={drodin} alt="logo" className="toggle-white" />
+                </Link> */}
               </div>
             </div>
             <div className="header-element">

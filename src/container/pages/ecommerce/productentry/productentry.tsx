@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { _ } from "gridjs-react";
+import { BASE_URL } from "../../../../utils/apis/apis";
 interface ProductlistProps {
   id?: string;
 }
@@ -25,7 +26,6 @@ const schema = yup
   .object({
     moddleNo: yup.string().required(),
     name: yup.string().required(),
-    heading: yup.string().required(),
     price: yup.string().required(),
     originalPrice: yup.string().required(),
     image: yup.string().required(),
@@ -34,7 +34,6 @@ const schema = yup
   .required();
 const Productlist: FC<ProductlistProps> = () => {
   const [product, setProduct] = useState({
-    heading: "",
     image: "",
     moddleNo: "",
     name: "",
@@ -49,12 +48,10 @@ const Productlist: FC<ProductlistProps> = () => {
   const [productsPerPage] = useState(8);
   // const [id, setId] = useState("");
   const [xlShow, setXlShow] = useState(false);
-  const preset_key = "ngujniat";
-  const cloud_name = "dgmpifw8b";
-  const [image, setImage] = useState("");
+  const [image,] = useState("");
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [currentPage]);
   //  token
   const token = localStorage.getItem("token");
   const config = {
@@ -66,10 +63,10 @@ const Productlist: FC<ProductlistProps> = () => {
   const fetchProducts = async () => {
     try {
       const res = await axios.get(
-        "https://doctorodinbackend.onrender.com/product",
+        BASE_URL + `product?page=${currentPage}&limit=8`,
         config
       );
-      // console.log("res", res);
+      // console.log("res", res.data);
       setProduct(res?.data);
     } catch (error) {
       console.error("error fetching products:", error);
@@ -85,37 +82,27 @@ const Productlist: FC<ProductlistProps> = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  function handleFile(e: any) {
-    const file = e.target.files[0];
-    // console.log("file", file);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
-    axios
-      .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-        formData
-      )
-      .then((res) => setImage(res.data.secure_url))
-      // .then(res => console.log(res))
-      .catch((err) => console.log(err));
-  }
   // create add api
   const formSubmit = async (data: any) => {
-    if (data.originalPrice <= data.price) {
+    if (parseFloat(data.originalPrice) < parseFloat(data.price)) {
       setError("originalPrice", {
         type: "manual",
-        message: "Original price must be greater than actual price.",
+        message: "Original price must be greater than actual price. fhfhj",
       });
-      return;
-    }  
-    data.image = image;
+      return null;
+    }
+
+    // data.image = "image";
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("moddleNo", data.moddleNo);
+    formData.append("name", data.name);
+    formData.append("price", data.price);
+    formData.append("originalPrice", data.originalPrice);
+    formData.append("link", data.link);
+  
     try {
-      const res = await axios.post(
-        "https://doctorodinbackend.onrender.com/product",
-        data,
-        config
-      );
+      const res = await axios.post(BASE_URL + "product", formData, config);
       // console.log("data",data);
       reset();
       console.log("res", res);
@@ -128,30 +115,18 @@ const Productlist: FC<ProductlistProps> = () => {
   };
   const handleDelete = async (productId: string) => {
     try {
-      await axios.delete(
-        `https://doctorodinbackend.onrender.com/product/${productId}`,
-        config
-      );
-      const res = await axios.get(
-        "https://doctorodinbackend.onrender.com/product",
-        config
-      );
+      await axios.delete(BASE_URL + `product/${productId}`, config);
+      const res = await axios.get(BASE_URL + "product", config);
       setProduct(res.data);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
-  // function handleChange(event: any) {
-  //   setId(event.target.value);
-  //   console.log("dataswfa", id);
-  // }
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = product.products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  function handleChange(event: any) {
+    setId(event.target.value);
+    console.log("dataswfa", event.target?.value);
+  }
+
   return (
     <Fragment>
       <Col>
@@ -196,21 +171,22 @@ const Productlist: FC<ProductlistProps> = () => {
           </Card.Body>
         </Card>
       </Col>
-      <div>
-        <Row className="d-flex overflow-auto">
-          {currentProducts.map((product: any, index: number) => (
+      <div className="">
+        <Row className="d-flex">
+          {product?.products.map((product: any, index: number) => (
             <Col xl={3} id="draggable-left">
               <div className="" style={{ height: "98%" }}>
                 <Card
                   key={index}
-                  className="custom-card "
+                  className="custom-card"
                   style={{ height: "94%" }}
                 >
                   <Card.Body className="rounded-3 mt-3">
-                    <Dropdown className="d-flex justify-content-end">
-                      {/* <Form.Control type="text" className="border border-primary text-nowrap" style={{width:"16%"}} 
-                      onClick={handleChange}
-                       /> */}
+                    <Dropdown className="d-flex justify-content-between">
+                      <div className="buyNow rounded-5 p-1 text-center" style={{width:30,height:30}} >
+                      <h5 className=" text-white text-center" >{product?.position}</h5>
+
+                      </div>
                       <Dropdown.Toggle
                         variant="light"
                         className="btn btn-icon btn-wave waves-light no-caret"
@@ -220,14 +196,13 @@ const Productlist: FC<ProductlistProps> = () => {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item
-                        className="text-info  "
+                          className="text-info  "
                           href={`/editform/editform/${product?._id}`}
                         >
                           Edit
                         </Dropdown.Item>
                         <Dropdown.Item
-                         className="text-info"
-                         
+                          className="text-info"
                           href="#"
                           onClick={() => handleDelete(product._id)}
                         >
@@ -248,7 +223,6 @@ const Productlist: FC<ProductlistProps> = () => {
                   </Card.Body>
 
                   <Card.Footer className="pb-5">
-                    <span className="fs-14 fw-bold ">{product.heading}</span>
                     <p className="fs-14 buyNoww fw-semibold mb-0 d-flex align-items-center">
                       ₹ {product.price}
                     </p>
@@ -256,7 +230,7 @@ const Productlist: FC<ProductlistProps> = () => {
                       <span className="op-7 text-decoration-line-through">
                         MRP {product.originalPrice}
                       </span>
-                      <a 
+                      <a
                         href={product.link}
                         className="btn  rounded-5 buyNow text-white"
                         onClick={(e) => {
@@ -298,7 +272,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     id="input-file"
                     // accept="image/jpeg ,image/png"
                     {...register("image", { required: true })}
-                    onChange={handleFile}
+                    // onChange={handleFile}
                   />
                   <p className="text-danger ">{errors.image?.message}</p>
 
@@ -326,17 +300,6 @@ const Productlist: FC<ProductlistProps> = () => {
                     {...register("name", { required: true, maxLength: 20 })}
                   />
                   <p className="text-danger ">{errors.name?.message}</p>
-
-                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
-                    Heading
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="input-text"
-                    placeholder="Enter your heading"
-                    {...register("heading", { required: true, maxLength: 20 })}
-                  />
-                  <p className="text-danger ">{errors.heading?.message}</p>
 
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Price
@@ -367,10 +330,8 @@ const Productlist: FC<ProductlistProps> = () => {
                       maxLength: 10,
                     })}
                   />
-                    <p className="text-danger">
-                    {errors.originalPrice?.message}
-                    </p>
-                
+                  <p className="text-danger">{errors.originalPrice?.message}</p>
+
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Product Link
                   </Form.Label>
@@ -427,7 +388,7 @@ const Productlist: FC<ProductlistProps> = () => {
       )}
       <Col xl={12}>
         <Card.Body className="d-flex justify-content-end  card-body d-flex flex-wrap">
-          <nav aria-label="..." className="me-3 mt-2 ">
+          <nav aria-label="..." className="me-3 mt-2">
             <Pagination className="pagination">
               <Pagination.Item
                 disabled={currentPage === 1}
@@ -442,16 +403,14 @@ const Productlist: FC<ProductlistProps> = () => {
                   key={index}
                   active={index + 1 === currentPage}
                   onClick={() => paginate(index + 1)}
-                  className=""
                 >
                   {index + 1}
-                  
                 </Pagination.Item>
               ))}
               <Pagination.Item
                 disabled={
-                  currentPage ===
-                  Math.ceil(product.products.length / productsPerPage)
+                  product?.pageInfo?.currentPage ==
+                  product?.pageInfo?.totalPages
                 }
                 onClick={() => setCurrentPage(currentPage + 1)}
               >

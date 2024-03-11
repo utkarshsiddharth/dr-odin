@@ -21,7 +21,7 @@ const TabToTop = () => {
       <div
         id="back-to-top"
         onClick={screenup}
-        className={`scrollToTop ${BacktoTop}`}
+        className={`scrollToTop ${BacktoTop} buyNow`}
       >
         <span className="arrow">
           <i className="ri-arrow-up-s-fill fs-20 pt-1"></i>

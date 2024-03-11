@@ -5,6 +5,7 @@ import { Card, Col, Form, Toast, ToastContainer } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { BASE_URL } from "../../../../utils/apis/apis";
 interface OrdersProps {
   id?: string;
   onClose?: () => void;
@@ -21,6 +22,8 @@ const schema = yup
   })
   .required();
 const Orders: FC<OrdersProps> = () => {
+  const [position, setPosition] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const [formData, setFormData] = useState<any>(null);
   const [show, setShow] = useState(false);
   const preset_key = "ngujniat";
@@ -28,7 +31,7 @@ const Orders: FC<OrdersProps> = () => {
   const [image, setImage] = useState("");
   const { productId: id } = useParams();
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
   const config = {
     headers: {
       Authorization: token,
@@ -48,6 +51,7 @@ const Orders: FC<OrdersProps> = () => {
       setValue("originalPrice", formData?.originalPrice);
       setValue("price", formData?.price);
       setValue("productLink", formData?.link);
+      setPosition(formData?.position);
     }
   }, [formData]);
   useEffect(() => {
@@ -110,7 +114,7 @@ const Orders: FC<OrdersProps> = () => {
         message: "Original price must be greater than actual price.",
       });
       return;
-    }  
+    }
 
     data.image = image;
     try {
@@ -125,6 +129,27 @@ const Orders: FC<OrdersProps> = () => {
       }, 1000);
     } catch (error) {
       console.log("error ", error);
+    }
+  };
+
+  const handleInputChange = (event: any) => {
+    const value = event.target.value;
+    setPosition(value);
+    // if (value.trim().length == 0) {
+    //   setIsValid(true);
+    // } else {
+    //   setIsValid(false);
+    // }
+  };
+
+  const upDatePostion = async () => {
+    try {
+      const data = { position: position };
+      const res = await axios.patch(BASE_URL + `product/${id}`, data, config);
+      // console.log("data", id);
+      console.log(res);
+    } catch (error) {
+      console.log("Error Fetching Data", error);
     }
   };
 
@@ -156,6 +181,14 @@ const Orders: FC<OrdersProps> = () => {
                     >
                       Save Changes
                     </button>
+                    <button
+                      className="btn buyNow text-white btn-sm text-nowrap mt-2 ms-2"
+                      type="submit"
+                      // disabled={position.trim().length === 0}
+                      onClick={upDatePostion}
+                    >
+                      Update Position
+                    </button>
                   </div>
                 </div>
               </div>
@@ -168,13 +201,26 @@ const Orders: FC<OrdersProps> = () => {
             <Card className="custom-card">
               <Card.Body>
                 <div>
-                  <Form.Label htmlFor="input-file" className="fs-14">
+                  <Form.Label htmlFor="input-text" className=" fs-14">
+                    Position
+                  </Form.Label>
+                  <Form.Control
+                    type="number"
+                    id="input-text"
+                    placeholder="Enter your position"
+                    value={position}
+                    onChange={handleInputChange}
+                  />
+                  {!isValid && (
+                    <p style={{ color: "red" }}>Input must be a number.</p>
+                  )}
+                  <Form.Label htmlFor="input-file" className="fs-14 mt-2">
                     Image Upload
                   </Form.Label>
                   <Form.Control
                     type="file"
                     id="input-file"
-                    required
+                    // required
                     onChange={handleFile}
                   />
                   <img
@@ -209,17 +255,6 @@ const Orders: FC<OrdersProps> = () => {
                 />
                 <p className="text-danger">{errors.name?.message}</p>
 
-                <Form.Label htmlFor="input-text" className="mt-2 fs-14">
-                  Heading
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  id="input-text"
-                  placeholder="Enter your heading"
-                  {...register("heading", { maxLength: 20 })}
-                />
-                <p className="text-danger">{errors.heading?.message}</p>
-
                 <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                   Actual Price
                 </Form.Label>
@@ -246,7 +281,7 @@ const Orders: FC<OrdersProps> = () => {
                     maxLength: 10,
                   })}
                 />
-              <p className="text-danger">{errors.originalPrice?.message}</p>
+                <p className="text-danger">{errors.originalPrice?.message}</p>
 
                 <Form.Label htmlFor="input-text" className="mt-2 fs-14">
                   Product Link
