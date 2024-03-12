@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from "react";
 import { Button, Card, Col, Collapse, Form, Row } from "react-bootstrap";
-import Pageheader from "../../../../components/pageheader/pageheader";
 import {
   Multipleselectdata,
   Multipleselectdata1,
@@ -64,12 +63,6 @@ const Formselect: FC<FormselectProps> = () => {
   const [open6, setOpen6] = useState(false);
   return (
     <Fragment>
-      <Pageheader
-        title="Form Select"
-        heading="Form Elements"
-        active="Form Select"
-      />
-
       <h6 className="fw-semibold mb-2">Choices:</h6>
       <Row>
         <Col xl={6}>

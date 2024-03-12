@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { LocalStorageBackup } from "../components/common/switcher/switcherdata/switcherdata";
 import { ThemeChanger } from "../redux/action";
-import favicon from "../assets/images/brand-logos/favicon.ico";
+import logoo from "../assets/images/brand-logos/logoo.png";
 
 import axios from "axios";
 import { BASE_URL } from "../utils/apis/apis";
@@ -37,7 +37,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
   };
   const navigate = useNavigate();
   const routeChange = () => {
-    const path = `${import.meta.env.BASE_URL}dashboards/crm/`;
+    const path = `${import.meta.env.BASE_URL}dashboards/`;
     navigate(path);
   };
 
@@ -110,7 +110,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
               <Toast.Header className="toast-header text-fixed-white mb-0 buyNow">
                 <img
                   className="bd-placeholder-img rounded me-2"
-                  src={favicon}
+                  src={logoo}
                   alt="..."
                 />
                 <strong className="me-auto">Dr.Odin</strong>
@@ -133,22 +133,6 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
             </div>
             <Tab.Container id="left-tabs-example" defaultActiveKey="react">
               <Card>
-                {/* <Nav
-                  variant="pills"
-                  className="justify-content-center authentication-tabs"
-                >
-                  <Nav.Item>
-                    <Nav.Link eventKey="react">
-                      <img src={react} alt="logo2" />
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="firebase">
-                      {" "}
-                      <img src={firebase} alt="logo1" />
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav> */}
                 <Tab.Content>
                   <Tab.Pane eventKey="react" className="border-0 pb-2">
                     <div className="p-4">
@@ -177,15 +161,6 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                           />
                         </Col>
                         <Col xl={12} className="mb-2">
-                          <Form.Label
-                            htmlFor="signin-password"
-                            className="form-label text-default d-block"
-                          >
-                            Password
-                            <Link to="#" className="float-end text-danger">
-                              Forget password ?
-                            </Link>
-                          </Form.Label>
                           <InputGroup>
                             <Form.Control
                               size="lg"

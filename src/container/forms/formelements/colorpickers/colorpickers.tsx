@@ -1,6 +1,5 @@
 import  { FC, Fragment, useState, useEffect, useRef } from 'react';
 import { Button, Card, Col, Collapse, Form, Row } from 'react-bootstrap';
-import Pageheader from '../../../../components/pageheader/pageheader';
 import Pickr from "@simonwep/pickr";
 
 interface ColorpickersProps { }
@@ -149,7 +148,6 @@ const Colorpickers: FC<ColorpickersProps> = () => {
   const [open1, setOpen1] = useState(false);
   return (
     <Fragment>
-      <Pageheader title="Color Pickers" heading="Form Elements" active="Color Pickers" />
 
       <Row>
         <Col xl={3}>

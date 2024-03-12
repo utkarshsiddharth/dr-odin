@@ -8,7 +8,6 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import Pageheader from "../../../components/pageheader/pageheader";
 
 interface FormlayoutsProps {}
 
@@ -27,7 +26,6 @@ const Formlayouts: FC<FormlayoutsProps> = () => {
   const [open11, setOpen11] = useState(false);
   return (
     <Fragment>
-      <Pageheader title="Layout" heading="Forms" active="Layout" />
       <Row>
         <Col xl={6}>
           <Card className="custom-card">

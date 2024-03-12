@@ -8,7 +8,6 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import Pageheader from "../../../components/pageheader/pageheader";
 import * as formik from "formik";
 import * as yup from "yup";
 
@@ -47,7 +46,6 @@ const Validation: FC<ValidationProps> = () => {
   const [open5, setOpen5] = useState(false);
   return (
     <Fragment>
-      <Pageheader title="Validation" heading="Forms" active="Validation" />
 
       <Row>
         <Col xl={6}>

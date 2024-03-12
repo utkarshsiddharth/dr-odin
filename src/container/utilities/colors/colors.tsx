@@ -1,6 +1,5 @@
 import  { FC, Fragment } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import Pageheader from '../../../components/pageheader/pageheader';
 import { Backgrounddata, Othercolors, Outlinedata } from './colordata';
 
 interface ColorsProps { }
@@ -8,7 +7,6 @@ interface ColorsProps { }
 const Colors: FC<ColorsProps> = () => {
     return (
         <Fragment>
-            <Pageheader title="Colors" heading="Utilities" active="Colors" />
             <Row>
                 <Col lg={12} sm={6}>
                     <Card className="custom-card">

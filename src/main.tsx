@@ -9,6 +9,7 @@ import Crm from "./container/dashboards/crm/crm.tsx";
 import Loader from "./components/common/loader/loader.tsx";
 import Productlist from "./container/pages/ecommerce/productentry/productentry.tsx";
 import EditForm from "./container/pages/ecommerce/editform/editform.tsx";
+import { ProtectedRoute } from "./utils/apis/auth.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
@@ -26,22 +27,34 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               element={<Signup />}
             /> */}
           </Route>
-          <Route path={`${import.meta.env.BASE_URL}`} element={<App/>}>
+
+          <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
             <Route
-              path={`${import.meta.env.BASE_URL}dashboards/crm`}
-              element={<Crm />}
+              path={`${import.meta.env.BASE_URL}dashboards`}
+              element={
+                <ProtectedRoute>
+                  <Crm />
+                </ProtectedRoute>
+              }
             />
-              {/* <Route
+            {/* <Route
               path={`${import.meta.env.BASE_URL}productdetails/productdetails`}
               element={<Productdetails />}
             /> */}
-              <Route
+            <Route
               path={`${import.meta.env.BASE_URL}productentry/productentry`}
-              element={<Productlist />}
+              element={   <ProtectedRoute>
+                <Productlist />
+              </ProtectedRoute>}
             />
-             <Route
+            <Route
               path={`${import.meta.env.BASE_URL}editform/editform/:productId`}
-              element={<EditForm  />}
+              element={
+              
+                <ProtectedRoute>
+              <EditForm />
+              </ProtectedRoute>
+              }
             />
           </Route>
         </Routes>

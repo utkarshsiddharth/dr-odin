@@ -11,7 +11,7 @@ export const MENUITEMS = [
         title: "Dashboards",
         badge: "",
         class: "badge bg-warning-transparent ms-2 ",
-        path: `${import.meta.env.BASE_URL}dashboards/crm`,
+        path: `${import.meta.env.BASE_URL}dashboards`,
       },
     ],
   },

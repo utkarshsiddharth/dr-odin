@@ -1,6 +1,5 @@
 import  { FC, Fragment, useState } from 'react';
 import { Badge, Button, Card, Col, Collapse, Dropdown, Modal, Row } from 'react-bootstrap';
-import Pageheader from '../../../components/pageheader/pageheader';
 import { Link } from 'react-router-dom';
 import media22 from "../../../assets/images/media/media-22.jpg";
 import media23 from "../../../assets/images/media/media-23.jpg";
@@ -63,7 +62,6 @@ const Cards: FC<CardsProps> = () => {
 
     return (
         <Fragment>
-            <Pageheader title="Cards" heading="Ui Elements" active="Cards" />
             <Row>
                 <Col xxl={3} xl={6} lg={6} md={6} sm={12}>
                     <Card className="custom-card">

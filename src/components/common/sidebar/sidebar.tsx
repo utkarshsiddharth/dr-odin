@@ -539,7 +539,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }: any) => {
           }}
         >
           <Link
-            to={`${import.meta.env.BASE_URL}dashboards/crm/`}
+            to={`${import.meta.env.BASE_URL}dashboards/`}
             className="header-logo"
           >
             <img src={drodin} alt="logo" className="desktop-logo" />

@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from "react";
 import { Button, Card, Col, Collapse, Form, Row } from "react-bootstrap";
-import Pageheader from "../../../../components/pageheader/pageheader";
 import { Checkdata1 } from "./radiosdata";
 
 interface ChecksradiosProps {}
@@ -46,11 +45,6 @@ const Checksradios: FC<ChecksradiosProps> = () => {
   const [open24, setOpen24] = useState(false);
   return (
     <Fragment>
-      <Pageheader
-        title="Checks & Radios"
-        heading="Form Elements"
-        active="Checks & Radios"
-      />
 
       <Row>
         <Col xl={3} lg={6} md={6} sm={12}>

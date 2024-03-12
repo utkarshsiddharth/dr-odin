@@ -19,6 +19,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { _ } from "gridjs-react";
 import { BASE_URL, } from "../../../../utils/apis/apis";
+import logoo from "../../../../assets/images/brand-logos/logoo.png";
 interface ProductlistProps {
   id?: string;
 }
@@ -184,7 +185,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     <Dropdown className="d-flex justify-content-between">
                       <div
                         className="buyNow rounded-5 p-1 text-center"
-                        style={{ width: 30, height: 30 }}
+                        style={{ width: 31, height: 32  }}
                       >
                         <h5 className=" text-white text-center">
                           {product?.position}
@@ -216,7 +217,7 @@ const Productlist: FC<ProductlistProps> = () => {
 
                     <img
                       src={product?.image}
-                      className="rounded mx-auto d-block h-75 w-50"
+                      className="rounded mx-auto d-block  w-50 __se__dashed"
                       alt="..."
                       // style={{ maxWidth: "60%",maxHeight:"40%"  }}
                     />
@@ -374,11 +375,11 @@ const Productlist: FC<ProductlistProps> = () => {
             className="toast colored-toast"
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
-              {/* <img
+              <img
                 className="bd-placeholder-img rounded me-2"
-                src={favicon}
+                src={logoo}
                 alt="..."
-              /> */}
+              />
               <strong className="me-auto">Dr.Odin</strong>
             </Toast.Header>
             <Toast.Body className="text-buyNoww bg-info-transparent">
@@ -406,6 +407,8 @@ const Productlist: FC<ProductlistProps> = () => {
                   key={index}
                   active={index + 1 === currentPage}
                   // onClick={() => paginate(index + 1)}
+                  className="buyNow "
+                  style={{background:"#0095EC"}}
                 >
                   {index + 1}
                 </Pagination.Item>

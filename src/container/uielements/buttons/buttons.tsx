@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from 'react';
 import { Button, Card, Col, Collapse, Row } from 'react-bootstrap';
-import Pageheader from '../../../components/pageheader/pageheader';
 import { ColoredButtons, DefaultButtons, GhostButtons, GradientButtons, LightButtons, OutlineButtons, SocialIconButtons } from './buttonsdata';
 
 interface ButtonsProps { }
@@ -32,7 +31,6 @@ const Buttons: FC<ButtonsProps> = () => {
     const [open24, setOpen24] = useState(false);
     return (
         <Fragment>
-            <Pageheader title="Buttons" heading="Ui Elements" active="Buttons" />
             <Row>
                 <Col xl={6}>
                     <Card className="custom-card">

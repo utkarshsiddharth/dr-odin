@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from "react";
 import { Button, Card, Col, Collapse, Form, Row } from "react-bootstrap";
-import Pageheader from "../../../../components/pageheader/pageheader";
 //filepond
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
@@ -17,12 +16,6 @@ const Fileuploads: FC<FileuploadsProps> = () => {
   const [open1, setOpen1] = useState(false);
   return (
     <Fragment>
-      <Pageheader
-        title="File Uploads"
-        heading="Form Elements"
-        active="File Uploads"
-      />
-
       <Row>
         <Col xl={6}>
           <Card className="custom-card">

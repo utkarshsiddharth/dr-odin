@@ -11,7 +11,6 @@ import {
   Row,
   SplitButton,
 } from "react-bootstrap";
-import Pageheader from "../../../components/pageheader/pageheader";
 import {
   AlignmentButtons,
   AutocloseButtons,
@@ -56,7 +55,6 @@ const Dropdowns: FC<DropdownsProps> = () => {
   const [open29, setOpen29] = useState(false);
   return (
     <Fragment>
-      <Pageheader title="Dropdowns" heading="Ui Elements" active="Dropdowns" />
       <Row>
         <Col xl={12}>
           <Card className="custom-card">

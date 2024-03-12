@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from "react";
 import { Button, Card, Col, Collapse, Form, Row } from "react-bootstrap";
-import Pageheader from "../../../../components/pageheader/pageheader";
 
 interface InputsProps {}
 
@@ -17,7 +16,6 @@ const Inputs: FC<InputsProps> = () => {
 
   return (
     <Fragment>
-      <Pageheader title="Inputs" heading="Form Elements" active="Inputs" />
 
       <Row>
         <Col xl={12}>

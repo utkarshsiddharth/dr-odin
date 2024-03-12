@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from 'react';
 import { Button, Card, Col, Collapse, Form, Row } from 'react-bootstrap';
-import Pageheader from '../../../../components/pageheader/pageheader';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -66,7 +65,6 @@ const Rangeslider: FC<RangesliderProps> = ({ local_varaiable }: any) => {
     const [open4, setOpen4] = useState(false);
     return (
         <Fragment>
-            <Pageheader title="Range Slider" heading="Form Elements" active="Range Slider" />
             <Row>
                 <Col xl={3}>
                     <Card className="custom-card">

@@ -1,6 +1,5 @@
 import { FC, Fragment } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import Pageheader from "../../../components/pageheader/pageheader";
 import { Columns, Data, Data1, Data2, Data3 } from "./griddata";
 import { Grid } from "gridjs-react";
 import "gridjs/dist/theme/mermaid.css";
@@ -10,7 +9,6 @@ interface GridjstablesProps {}
 const Gridjstables: FC<GridjstablesProps> = () => {
   return (
     <Fragment>
-      <Pageheader title="Grid Js" heading="Tables" active="Grid Js" />
       <Row>
         <Col xl={12}>
           <Card className="custom-card">

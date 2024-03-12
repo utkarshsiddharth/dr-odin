@@ -1,6 +1,5 @@
 import { FC, Fragment } from "react";
 import { Card, Col, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
-import Pageheader from "../../components/pageheader/pageheader";
 import {
   Bootstrapicons,
   Boxicons,
@@ -15,7 +14,6 @@ interface IconsProps {}
 const Icons: FC<IconsProps> = () => {
   return (
     <Fragment>
-      <Pageheader title="Icons" heading="Icons" active="Icons" />
       <Row>
         <Col xl={12}>
           <Card className="custom-card">

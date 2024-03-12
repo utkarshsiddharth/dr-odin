@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from 'react';
 import { Button, Card, Col, Collapse, Pagination, Row } from 'react-bootstrap';
-import Pageheader from '../../../components/pageheader/pageheader';
 
 interface PaginationsProps { }
 
@@ -16,7 +15,6 @@ const Paginations: FC<PaginationsProps> = () => {
     const [open9, setOpen9] = useState(false);
     return (
         <Fragment>
-            <Pageheader title="Pagination" heading="Ui Elements" active="Pagination" />
             <Row>
                 <Col xxl={3} xl={6}>
                     <Card className="custom-card">

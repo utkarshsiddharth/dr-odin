@@ -1,6 +1,5 @@
 import { FC, Fragment, useState , ChangeEvent } from 'react';
 import { Card, Col, Form, Row } from 'react-bootstrap';
-import Pageheader from '../../../../components/pageheader/pageheader';
 import InputMask from 'react-input-mask';
 import 'rc-slider/assets/index.css';
 import { NumericFormat } from 'react-number-format';
@@ -34,7 +33,6 @@ const Inputmasks: FC<InputmasksProps> = () => {
     const formattedTime1 = format(currentTime, 'HH:mm');
     return (
         <Fragment>
-            <Pageheader title="Input Masks" heading="Form Elements" active="Input Masks" />
             <Row>
                 <Col xl={4}>
                     <Card className="custom-card">

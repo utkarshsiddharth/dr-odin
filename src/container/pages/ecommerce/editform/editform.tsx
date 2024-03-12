@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { BASE_URL } from "../../../../utils/apis/apis";
+import logoo from "../../../../assets/images/brand-logos/logoo.png";
 
 interface OrdersProps {
   id?: string;
@@ -104,7 +105,7 @@ const Orders: FC<OrdersProps> = () => {
     reset();
   };
   const onSubmit = async (data: any) => {
-    if (data.originalPrice <= data.price) {
+    if (parseFloat(data.originalPrice) < parseFloat(data.price)) {
       setError("originalPrice", {
         type: "manual",
         message: "Original price must be greater than actual price.",
@@ -307,11 +308,11 @@ const Orders: FC<OrdersProps> = () => {
             className="toast colored-toast"
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
-              {/* <img
+              <img
                 className="bd-placeholder-img rounded me-2"
-                src={favicon}
+                src={logoo}
                 alt="..."
-              /> */}
+              />
               <strong className="me-auto">Dr.Odin</strong>
             </Toast.Header>
             <Toast.Body className="text-buyNoww bg-info-transparent">
@@ -330,15 +331,13 @@ const Orders: FC<OrdersProps> = () => {
             show={update}
             delay={2000}
             autohide
-            bg="primary-transparent"
-            className="toast colored-toast"
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
-              {/* <img
+              <img
                 className="bd-placeholder-img rounded me-2"
-                src={favicon}
+                src={logoo}
                 alt="..."
-              /> */}
+              />
               <strong className="me-auto">Dr.Odin</strong>
             </Toast.Header>
             <Toast.Body className="text-buyNoww bg-info-transparent">

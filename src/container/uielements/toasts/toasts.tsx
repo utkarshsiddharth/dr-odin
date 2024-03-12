@@ -9,7 +9,6 @@ import {
   Toast,
   ToastContainer,
 } from "react-bootstrap";
-import Pageheader from "../../../components/pageheader/pageheader";
 import favicon from "../../../assets/images/brand-logos/favicon.ico";
 import toggledark from "../../../assets/images/brand-logos/toggle-dark.png";
 
@@ -89,7 +88,6 @@ const Toasts: FC<ToastsProps> = () => {
   const [open10, setOpen10] = useState(false);
   return (
     <Fragment>
-      <Pageheader title="Toasts" heading="Ui Elements" active="Toasts" />
       <Row>
         <Col xl={4}>
           <Card className="custom-card">

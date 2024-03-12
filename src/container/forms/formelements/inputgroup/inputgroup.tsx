@@ -1,6 +1,5 @@
 import { FC, Fragment, useState } from 'react';
 import { Button, Card, Col, Collapse, Dropdown, Form, InputGroup, Row } from 'react-bootstrap';
-import Pageheader from '../../../../components/pageheader/pageheader';
 import Select from 'react-select';
 
 interface InputgroupProps { }
@@ -28,7 +27,6 @@ const Inputgroup: FC<InputgroupProps> = () => {
     ];
     return (
         <Fragment>
-            <Pageheader title="Input Group" heading="Form Elements" active="Input Group" />
 
             <Row>
                 <Col xl={12}>

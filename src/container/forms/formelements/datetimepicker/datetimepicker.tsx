@@ -1,6 +1,5 @@
 import  { FC, Fragment , useState} from 'react';
 import { Card, Col,  InputGroup, Row } from 'react-bootstrap';
-import Pageheader from '../../../../components/pageheader/pageheader';
 import DatePicker from 'react-datepicker';
 
 interface DatetimepickerProps {}
@@ -15,7 +14,6 @@ const Datetimepicker: FC<DatetimepickerProps> = () =>{
     };
     return (
   <Fragment>
-                <Pageheader title="Date & Time Pickers" heading="Form Elements" active="Date & Time Pickers" />
 
                 <Row>
                     <Col xxl={4} xl={6}>
