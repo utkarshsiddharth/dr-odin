@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { BASE_URL } from "../../../../utils/apis/apis";
+
 interface OrdersProps {
   id?: string;
   onClose?: () => void;
@@ -15,17 +16,17 @@ const schema = yup
     image: yup.string().required(),
     moddleNo: yup.string().required(),
     name: yup.string().required(),
-    heading: yup.string().required(),
     price: yup.number().required(),
     originalPrice: yup.number().required(),
     productLink: yup.string().required(),
   })
   .required();
+
 const Orders: FC<OrdersProps> = () => {
   const [position, setPosition] = useState("");
-  const [isValid, setIsValid] = useState(true);
   const [formData, setFormData] = useState<any>(null);
   const [show, setShow] = useState(false);
+  const [update, setUpdate] = useState(false);
   const preset_key = "ngujniat";
   const cloud_name = "dgmpifw8b";
   const [image, setImage] = useState("");
@@ -44,7 +45,6 @@ const Orders: FC<OrdersProps> = () => {
   };
   useEffect(() => {
     if (formData) {
-      setValue("heading", formData?.heading);
       setValue("image", formData?.image);
       setValue("moddleNo", formData?.moddleNo);
       setValue("name", formData?.name);
@@ -57,10 +57,7 @@ const Orders: FC<OrdersProps> = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `https://doctorodinbackend.onrender.com/product/${id}`,
-          config
-        );
+        const res = await axios.get(BASE_URL + `product/${id}`, config);
         console.log("data", id);
         console.log(res);
         setFormData(res.data);
@@ -95,7 +92,6 @@ const Orders: FC<OrdersProps> = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      heading: "",
       image: "",
       moddleNo: "",
       name: "",
@@ -148,6 +144,7 @@ const Orders: FC<OrdersProps> = () => {
       const res = await axios.patch(BASE_URL + `product/${id}`, data, config);
       // console.log("data", id);
       console.log(res);
+      setUpdate(true);
     } catch (error) {
       console.log("Error Fetching Data", error);
     }
@@ -211,9 +208,7 @@ const Orders: FC<OrdersProps> = () => {
                     value={position}
                     onChange={handleInputChange}
                   />
-                  {!isValid && (
-                    <p style={{ color: "red" }}>Input must be a number.</p>
-                  )}
+
                   <Form.Label htmlFor="input-file" className="fs-14 mt-2">
                     Image Upload
                   </Form.Label>
@@ -322,6 +317,33 @@ const Orders: FC<OrdersProps> = () => {
             <Toast.Body className="text-buyNoww bg-info-transparent">
               {Object.keys(errors).length === 0
                 ? "Fields are updated sucessfully!!"
+                : "Please fill required fields"}
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+      )}
+
+      {update && (
+        <ToastContainer className="toast-container position-fixed top-0 end-0 me-4 mt-4">
+          <Toast
+            onClose={() => setUpdate(false)}
+            show={update}
+            delay={2000}
+            autohide
+            bg="primary-transparent"
+            className="toast colored-toast"
+          >
+            <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
+              {/* <img
+                className="bd-placeholder-img rounded me-2"
+                src={favicon}
+                alt="..."
+              /> */}
+              <strong className="me-auto">Dr.Odin</strong>
+            </Toast.Header>
+            <Toast.Body className="text-buyNoww bg-info-transparent">
+              {Object.keys(errors).length === 0
+                ? "Position Updated Sucessfully!!"
                 : "Please fill required fields"}
             </Toast.Body>
           </Toast>

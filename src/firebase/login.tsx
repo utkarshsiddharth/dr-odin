@@ -18,6 +18,7 @@ import { ThemeChanger } from "../redux/action";
 import favicon from "../assets/images/brand-logos/favicon.ico";
 
 import axios from "axios";
+import { BASE_URL } from "../utils/apis/apis";
 
 interface LoginProps {}
 
@@ -42,9 +43,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
-        "https://doctorodinbackend.onrender.com/login",
-        data
+      const res = await axios.post(BASE_URL + "login", data, 
       );
       if (res.status === 200) {
         const user = res?.data;
@@ -116,7 +115,9 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                 />
                 <strong className="me-auto">Dr.Odin</strong>
               </Toast.Header>
-              <Toast.Body className="text-buyNoww bg-info-transparent" >{err ? err : "Successfully Logged In!!"}</Toast.Body>
+              <Toast.Body className="text-buyNoww bg-info-transparent">
+                {err ? err : "Successfully Logged In!!"}
+              </Toast.Body>
             </Toast>
           </ToastContainer>
         )}
@@ -231,16 +232,16 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                           </div>
                         </Col>
                         {/* <Col xl={12} className="d-grid mt-2"> */}
-                          <Button
+                        <Button
                           variant="light"
-                            onClick={() => {
-                              handleLogin();
-                            }}
-                            size="lg"
-                            className="buyNow text-white"
-                          >
-                            Sign In
-                          </Button>
+                          onClick={() => {
+                            handleLogin();
+                          }}
+                          size="lg"
+                          className="buyNow text-white"
+                        >
+                          Sign In
+                        </Button>
                         {/* </Col> */}
                       </div>
                       {/* <div className="text-center">

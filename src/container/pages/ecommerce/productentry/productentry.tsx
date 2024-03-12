@@ -18,7 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { _ } from "gridjs-react";
-import { BASE_URL } from "../../../../utils/apis/apis";
+import { BASE_URL, } from "../../../../utils/apis/apis";
 interface ProductlistProps {
   id?: string;
 }
@@ -41,14 +41,14 @@ const Productlist: FC<ProductlistProps> = () => {
     price: 0,
     productLink: "",
     products: [],
+    pageInfo: { currentPage: 0, totalPages: 0 },
   });
   console.log("prodycut", product);
   const [show, setShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
-  // const [id, setId] = useState("");
   const [xlShow, setXlShow] = useState(false);
-  const [image,] = useState("");
+  const [image, setImage] = useState("");
   useEffect(() => {
     fetchProducts();
   }, [currentPage]);
@@ -87,7 +87,7 @@ const Productlist: FC<ProductlistProps> = () => {
     if (parseFloat(data.originalPrice) < parseFloat(data.price)) {
       setError("originalPrice", {
         type: "manual",
-        message: "Original price must be greater than actual price. fhfhj",
+        message: "Original price must be greater than actual price.",
       });
       return null;
     }
@@ -100,7 +100,7 @@ const Productlist: FC<ProductlistProps> = () => {
     formData.append("price", data.price);
     formData.append("originalPrice", data.originalPrice);
     formData.append("link", data.link);
-  
+
     try {
       const res = await axios.post(BASE_URL + "product", formData, config);
       // console.log("data",data);
@@ -122,10 +122,9 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("Error deleting product:", error);
     }
   };
-  function handleChange(event: any) {
-    setId(event.target.value);
-    console.log("dataswfa", event.target?.value);
-  }
+  const handleFile = (event:any)=>{
+     setImage(event.target.files[0]);
+  };
 
   return (
     <Fragment>
@@ -183,9 +182,13 @@ const Productlist: FC<ProductlistProps> = () => {
                 >
                   <Card.Body className="rounded-3 mt-3">
                     <Dropdown className="d-flex justify-content-between">
-                      <div className="buyNow rounded-5 p-1 text-center" style={{width:30,height:30}} >
-                      <h5 className=" text-white text-center" >{product?.position}</h5>
-
+                      <div
+                        className="buyNow rounded-5 p-1 text-center"
+                        style={{ width: 30, height: 30 }}
+                      >
+                        <h5 className=" text-white text-center">
+                          {product?.position}
+                        </h5>
                       </div>
                       <Dropdown.Toggle
                         variant="light"
@@ -272,7 +275,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     id="input-file"
                     // accept="image/jpeg ,image/png"
                     {...register("image", { required: true })}
-                    // onChange={handleFile}
+                    onChange={handleFile}
                   />
                   <p className="text-danger ">{errors.image?.message}</p>
 
@@ -402,7 +405,7 @@ const Productlist: FC<ProductlistProps> = () => {
                 <Pagination.Item
                   key={index}
                   active={index + 1 === currentPage}
-                  onClick={() => paginate(index + 1)}
+                  // onClick={() => paginate(index + 1)}
                 >
                   {index + 1}
                 </Pagination.Item>

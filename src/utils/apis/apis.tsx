@@ -1,1 +1,7 @@
-export const BASE_URL = "http://13.233.212.7:3000/";
+
+// import https from "https";
+
+export const BASE_URL = "https://doctorodinbackend.onrender.com/";
+// export const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+// export const httpAgent = new (require("http").Agent)();
+
