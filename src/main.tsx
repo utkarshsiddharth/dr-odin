@@ -43,17 +43,18 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             /> */}
             <Route
               path={`${import.meta.env.BASE_URL}productentry/productentry`}
-              element={   <ProtectedRoute>
-                <Productlist />
-              </ProtectedRoute>}
+              element={
+                <ProtectedRoute>
+                  <Productlist />
+                </ProtectedRoute>
+              }
             />
             <Route
               path={`${import.meta.env.BASE_URL}editform/editform/:productId`}
               element={
-              
                 <ProtectedRoute>
-              <EditForm />
-              </ProtectedRoute>
+                  <EditForm />
+                </ProtectedRoute>
               }
             />
           </Route>

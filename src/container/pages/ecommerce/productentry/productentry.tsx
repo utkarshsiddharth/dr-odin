@@ -67,7 +67,6 @@ const Productlist: FC<ProductlistProps> = () => {
         BASE_URL + `product?page=${currentPage}&limit=8`,
         config
       );
-      // console.log("res", res.data);
       setProduct(res?.data);
     } catch (error) {
       console.error("error fetching products:", error);
@@ -92,8 +91,6 @@ const Productlist: FC<ProductlistProps> = () => {
       });
       return null;
     }
-
-    // data.image = "image";
     const formData = new FormData();
     formData.append("image", image);
     formData.append("moddleNo", data.moddleNo);
@@ -104,7 +101,6 @@ const Productlist: FC<ProductlistProps> = () => {
 
     try {
       const res = await axios.post(BASE_URL + "product", formData, config);
-      // console.log("data",data);
       reset();
       console.log("res", res);
       fetchProducts();
@@ -123,6 +119,7 @@ const Productlist: FC<ProductlistProps> = () => {
       console.error("Error deleting product:", error);
     }
   };
+
   const handleFile = (event:any)=>{
      setImage(event.target.files[0]);
   };

@@ -28,8 +28,6 @@ const Orders: FC<OrdersProps> = () => {
   const [formData, setFormData] = useState<any>(null);
   const [show, setShow] = useState(false);
   const [update, setUpdate] = useState(false);
-  const preset_key = "ngujniat";
-  const cloud_name = "dgmpifw8b";
   const [image, setImage] = useState("");
   const { productId: id } = useParams();
   const token = localStorage.getItem("token");
@@ -68,21 +66,9 @@ const Orders: FC<OrdersProps> = () => {
     };
     fetchData();
   }, [id]);
-  function handleFile(e: any) {
-    const file = e.target.files[0];
-    // console.log("file", file);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
-    axios
-      .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-        formData
-      )
-      .then((res) => setImage(res.data.secure_url))
-      // .then(res => console.log(res))
-      .catch((err) => console.log(err));
-  }
+  const handleFile = (event:any)=>{
+    setImage(event.target.files[0]);
+ };
   const {
     register,
     setValue,
@@ -112,12 +98,17 @@ const Orders: FC<OrdersProps> = () => {
       });
       return;
     }
-
-    data.image = image;
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("moddleNo", data.moddleNo);
+    formData.append("name", data.name);
+    formData.append("price", data.price);
+    formData.append("originalPrice", data.originalPrice);
+    formData.append("link", data.link);
     try {
       await axios.put(
         `https://doctorodinbackend.onrender.com/product/${id}`,
-        data,
+        formData,
         config
       );
       setShow(true);

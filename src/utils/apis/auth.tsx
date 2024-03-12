@@ -1,4 +1,4 @@
-
+/*eslint linebreak-style: ["error", "windows"]*/
 import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
