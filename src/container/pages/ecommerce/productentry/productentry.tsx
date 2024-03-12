@@ -18,7 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { _ } from "gridjs-react";
-import { BASE_URL, } from "../../../../utils/apis/apis";
+import { BASE_URL } from "../../../../utils/apis/apis";
 import logoo from "../../../../assets/images/brand-logos/logoo.png";
 interface ProductlistProps {
   id?: string;
@@ -120,8 +120,8 @@ const Productlist: FC<ProductlistProps> = () => {
     }
   };
 
-  const handleFile = (event:any)=>{
-     setImage(event.target.files[0]);
+  const handleFile = (event: any) => {
+    setImage(event.target.files[0]);
   };
 
   return (
@@ -182,7 +182,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     <Dropdown className="d-flex justify-content-between">
                       <div
                         className="buyNow rounded-5 p-1 text-center"
-                        style={{ width: 31, height: 32  }}
+                        style={{ width: 31, height: 32 }}
                       >
                         <h5 className=" text-white text-center">
                           {product?.position}
@@ -405,7 +405,7 @@ const Productlist: FC<ProductlistProps> = () => {
                   active={index + 1 === currentPage}
                   // onClick={() => paginate(index + 1)}
                   className="buyNow "
-                  style={{background:"#0095EC"}}
+                  style={{ background: "#0095EC" }}
                 >
                   {index + 1}
                 </Pagination.Item>

@@ -1,6 +1,6 @@
 export const MENUITEMS = [
   {
-    menutitle: "DASHBOARD", 
+    menutitle: "DASHBOARD",
     Items: [
       {
         icon: <i className="side-menu__icon bx bx-home text-white"></i>,
@@ -19,7 +19,9 @@ export const MENUITEMS = [
     menutitle: "PRODUCT CATALOG",
     Items: [
       {
-        icon: <i className="side-menu__icon bi bi-terminal-plus mb-2 text-white"></i>,
+        icon: (
+          <i className="side-menu__icon bi bi-terminal-plus mb-2 text-white"></i>
+        ),
         type: "link",
         Name: "",
         active: false,
@@ -27,17 +29,17 @@ export const MENUITEMS = [
         title: "Product Catalog",
         badge: "",
         class: "badge bg-warning-transparent ms-2",
-        path: `${import.meta.env.BASE_URL}productentry/productentry`,    
+        path: `${import.meta.env.BASE_URL}productentry/productentry`,
         // children: [
-        //   {   
+        //   {
         //     path: `${import.meta.env.BASE_URL}productdetails/productdetails`,
         //     title: "Add Product",
         //     type: "link",
         //     active: false,
         //     selected: false,
         //   },
-        //   {   
-           
+        //   {
+
         //     title: "Product Addition",
         //     type: "link",
         //     active: false,
