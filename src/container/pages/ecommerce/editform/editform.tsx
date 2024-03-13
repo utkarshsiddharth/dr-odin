@@ -19,13 +19,14 @@ const schema = yup
     name: yup.string().required(),
     price: yup.number().required(),
     originalPrice: yup.number().required(),
-    productLink: yup.string().required(),
+    link: yup.string().required(),
   })
   .required();
 
 const Orders: FC<OrdersProps> = () => {
   const [position, setPosition] = useState("");
   const [formData, setFormData] = useState<any>(null);
+  console.log("data",formData);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [show, setShow] = useState(false);
@@ -51,7 +52,7 @@ const Orders: FC<OrdersProps> = () => {
       setValue("name", formData?.name);
       setValue("originalPrice", formData?.originalPrice);
       setValue("price", formData?.price);
-      setValue("productLink", formData?.link);
+      setValue("link", formData?.link);
       setPosition(formData?.position);
     }
   }, [formData]);
@@ -86,7 +87,7 @@ const Orders: FC<OrdersProps> = () => {
       name: "",
       originalPrice: 0,
       price: 0,
-      productLink: "",
+      link: "",
     },
   });
   const handleCancel = () => {
@@ -127,11 +128,6 @@ const Orders: FC<OrdersProps> = () => {
   const handleInputChange = (event: any) => {
     const value = event.target.value;
     setPosition(value);
-    // if (value.trim().length == 0) {
-    //   setIsValid(true);
-    // } else {
-    //   setIsValid(false);
-    // }
   };
 
   const upDatePostion = async () => {
@@ -309,11 +305,11 @@ const Orders: FC<OrdersProps> = () => {
                   type="text"
                   id="input-text"
                   placeholder="Enter the product link"
-                  {...register("productLink", {
+                  {...register("link", {
                     maxLength: 30,
                   })}
                 />
-                <p className="text-danger">{errors.productLink?.message}</p>
+                <p className="text-danger">{errors.link?.message}</p>
               </Card.Body>
             </Card>
           </Col>
@@ -327,8 +323,6 @@ const Orders: FC<OrdersProps> = () => {
             show={show}
             delay={2000}
             autohide
-            bg="primary-transparent"
-            className="toast colored-toast"
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
               <img

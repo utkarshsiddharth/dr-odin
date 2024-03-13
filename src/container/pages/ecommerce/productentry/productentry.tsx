@@ -40,7 +40,7 @@ const Productlist: FC<ProductlistProps> = () => {
     name: "",
     originalPrice: 0,
     price: 0,
-    productLink: "",
+    link: "",
     products: [],
     pageInfo: { currentPage: 0, totalPages: 0 },
   });
