@@ -26,6 +26,8 @@ const schema = yup
 const Orders: FC<OrdersProps> = () => {
   const [position, setPosition] = useState("");
   const [formData, setFormData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
   const [show, setShow] = useState(false);
   const [update, setUpdate] = useState(false);
   const [image, setImage] = useState("");
@@ -66,9 +68,9 @@ const Orders: FC<OrdersProps> = () => {
     };
     fetchData();
   }, [id]);
-  const handleFile = (event:any)=>{
+  const handleFile = (event: any) => {
     setImage(event.target.files[0]);
- };
+  };
   const {
     register,
     setValue,
@@ -106,6 +108,7 @@ const Orders: FC<OrdersProps> = () => {
     formData.append("originalPrice", data.originalPrice);
     formData.append("link", data.link);
     try {
+      setLoading(true);
       await axios.put(
         `https://doctorodinbackend.onrender.com/product/${id}`,
         formData,
@@ -117,6 +120,7 @@ const Orders: FC<OrdersProps> = () => {
       }, 1000);
     } catch (error) {
       console.log("error ", error);
+      setLoading(false);
     }
   };
 
@@ -132,13 +136,18 @@ const Orders: FC<OrdersProps> = () => {
 
   const upDatePostion = async () => {
     try {
+      setLoading1(true);
       const data = { position: position };
       const res = await axios.patch(BASE_URL + `product/${id}`, data, config);
       // console.log("data", id);
       console.log(res);
+      setTimeout(() => {
+        routeChange();
+      }, 1000);
       setUpdate(true);
     } catch (error) {
       console.log("Error Fetching Data", error);
+      setLoading1(false);
     }
   };
 
@@ -147,11 +156,32 @@ const Orders: FC<OrdersProps> = () => {
       <Col>
         <Card.Header className="d-flex align-items-center justify-content-between flex-wrap gap-3  p-3"></Card.Header>
       </Col>
+      <div className="d-flex justify-content-end">
+      <div className="d-flex  mt-2 ms-2 buyNow rounded-2  justify-content-center">
+        {loading1 && (
+          <div
+            className="spinner-border spinner-border-sm ms-1 text-white "
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
+        <button
+          className="btn  text-white btn-sm text-nowrap ms-2"
+          type="submit"
+          // disabled={position.trim().length === 0}
+          onClick={upDatePostion}
+        >
+          Update Position
+        </button>
+      </div>
+      </div>
+     
       <form onSubmit={handleSubmit(onSubmit)}>
         <Col xl={12}>
-          <Card className="custom-card">
+          <Card className="custom-card mt-2">
             <Card.Body className="">
-              <div className="d-flex align-items-center justify-content-between flex-wrap">
+              <div className="d-flex align-items-center justify-content-between flex-wra">
                 <div className="d-flex flex-wrap gap-1">
                   <h1 className="fs-6 fw-bold">Edit your Content</h1>
                 </div>
@@ -164,20 +194,22 @@ const Orders: FC<OrdersProps> = () => {
                     >
                       Cancel
                     </button>
-                    <button
-                      className="btn buyNow text-white btn-sm text-nowrap mt-2 ms-2"
-                      type="submit"
-                    >
-                      Save Changes
-                    </button>
-                    <button
-                      className="btn buyNow text-white btn-sm text-nowrap mt-2 ms-2"
-                      type="submit"
-                      // disabled={position.trim().length === 0}
-                      onClick={upDatePostion}
-                    >
-                      Update Position
-                    </button>
+                    <div className="d-flex align-items-center mt-2 ms-2 buyNow rounded-2 justify-content-center">
+                      {loading && (
+                        <div
+                          className="spinner-border spinner-border-sm ms-1 text-white "
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      )}
+                      <button
+                        className="btn text-white border-0 btn-sm text-nowrap"
+                        type="submit"
+                      >
+                        Save Changes
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -25,6 +25,7 @@ interface LoginProps {}
 const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
   const [passwordshow1, setpasswordshow1] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [err, setError] = useState("");
   const [data, setData] = useState({
     email: "example@gmail.com",
@@ -43,8 +44,8 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(BASE_URL + "login", data, 
-      );
+      setLoading(true);
+      const res = await axios.post(BASE_URL + "login", data);
       if (res.status === 200) {
         const user = res?.data;
         setShow(true);
@@ -62,6 +63,7 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
       console.error("Error:", error);
       setError("Invalid Credentials!!");
       setShow(true);
+      setLoading(false);
     }
   };
 
@@ -207,16 +209,29 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
                           </div>
                         </Col>
                         {/* <Col xl={12} className="d-grid mt-2"> */}
-                        <Button
-                          variant="light"
-                          onClick={() => {
-                            handleLogin();
-                          }}
-                          size="lg"
-                          className="buyNow text-white"
-                        >
-                          Sign In
-                        </Button>
+                        <div className="d-flex align-items-center buyNow rounded-2 justify-content-center ">
+                          {loading && (
+                            <div
+                              className="spinner-border spinner-border-sm ms-2 text-white"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          )}
+                          <Button
+                            variant=""
+                            onClick={() => {
+                              handleLogin();
+                            }}
+                            size="lg"
+                            className="border-0 text-white"
+                          >
+                            Sign In
+                          </Button>
+                        </div>
+
                         {/* </Col> */}
                       </div>
                       {/* <div className="text-center">

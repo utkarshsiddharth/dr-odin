@@ -46,6 +46,7 @@ const Productlist: FC<ProductlistProps> = () => {
   });
   console.log("prodycut", product);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
   const [xlShow, setXlShow] = useState(false);
@@ -100,6 +101,7 @@ const Productlist: FC<ProductlistProps> = () => {
     formData.append("link", data.link);
 
     try {
+      setLoading(true);
       const res = await axios.post(BASE_URL + "product", formData, config);
       reset();
       console.log("res", res);
@@ -117,6 +119,7 @@ const Productlist: FC<ProductlistProps> = () => {
       setProduct(res.data);
     } catch (error) {
       console.error("Error deleting product:", error);
+      setLoading(false);
     }
   };
 
@@ -142,7 +145,8 @@ const Productlist: FC<ProductlistProps> = () => {
                     <InputGroup className="me-2 mt-2">
                       <Form.Control
                         type="text"
-                        className="bg-light btn-sm border-0 text-primary"
+                        className="bg-light btn-sm border-0"
+                        style={{ color: "#0095EC" }}
                         placeholder="Search Product"
                       />
                       <Button
@@ -252,6 +256,7 @@ const Productlist: FC<ProductlistProps> = () => {
       <Modal
         size="xl"
         show={xlShow}
+        onShow={() => setLoading(false)}
         onHide={() => setXlShow(false)}
         aria-labelledby="example-modal-sizes-title-sm"
       >
@@ -351,13 +356,24 @@ const Productlist: FC<ProductlistProps> = () => {
             </Col>
           </Modal.Body>
           <Modal.Footer>
-            <button
-              className="btn buyNow text-white btn-sm text-nowrap mt-2"
-              type="submit"
-              // onClick={() => setXlShow(true)}
-            >
-              Add Product
-            </button>
+            <div className="d-flex align-items-center buyNow rounded-2 justify-content-center">
+              {loading && (
+                <div
+                  className="spinner-border spinner-border-sm ms-2 text-white "
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
+              <button
+                className="btn text-white border-0 btn-sm text-nowrap"
+                type="submit"
+                // disabled={loading}
+                // onClick={() => setXlShow(true)}
+              >
+                Add Product
+              </button>
+            </div>
           </Modal.Footer>
         </form>
       </Modal>
@@ -390,7 +406,7 @@ const Productlist: FC<ProductlistProps> = () => {
       <Col xl={12}>
         <Card.Body className="d-flex justify-content-end  card-body d-flex flex-wrap">
           <nav aria-label="..." className="me-3 mt-2">
-            <Pagination className="pagination">
+            <Pagination className="">
               <Pagination.Item
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
@@ -400,15 +416,15 @@ const Productlist: FC<ProductlistProps> = () => {
               {Array.from({
                 length: Math.ceil(product.products.length / productsPerPage),
               }).map((_, index) => (
-                <Pagination.Item
+                <div
                   key={index}
-                  active={index + 1 === currentPage}
+                  // active={index + 1 === currentPage}
                   // onClick={() => paginate(index + 1)}
-                  className="buyNow "
-                  style={{ background: "#0095EC" }}
+                  className="h-25 text-center p-2 text-white"
+                  style={{ width: "", background: "#0095EC" }}
                 >
                   {index + 1}
-                </Pagination.Item>
+                </div>
               ))}
               <Pagination.Item
                 disabled={
