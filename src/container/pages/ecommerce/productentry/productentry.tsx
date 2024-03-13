@@ -232,7 +232,7 @@ const Productlist: FC<ProductlistProps> = () => {
                       ₹ {product.price}
                     </p>
                     <div className="d-flex justify-content-between">
-                      <span className="op-7 text-decoration-line-through">
+                      <span className={product.price === product.originalPrice ? '' : 'op-7 text-decoration-line-through'}>
                         MRP {product.originalPrice}
                       </span>
                       <a
