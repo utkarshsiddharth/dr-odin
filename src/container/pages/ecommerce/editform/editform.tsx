@@ -26,7 +26,7 @@ const schema = yup
 const Orders: FC<OrdersProps> = () => {
   const [position, setPosition] = useState("");
   const [formData, setFormData] = useState<any>(null);
-  console.log("data",formData);
+  console.log("data", formData);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [show, setShow] = useState(false);
@@ -153,26 +153,26 @@ const Orders: FC<OrdersProps> = () => {
         <Card.Header className="d-flex align-items-center justify-content-between flex-wrap gap-3  p-3"></Card.Header>
       </Col>
       <div className="d-flex justify-content-end">
-      <div className="d-flex  mt-2 ms-2 buyNow rounded-2  justify-content-center">
-        {loading1 && (
-          <div
-            className="spinner-border spinner-border-sm ms-1 text-white "
-            role="status"
+        <div className="d-flex  mt-2 ms-2 buyNow rounded-2  justify-content-center">
+          {loading1 && (
+            <div
+              className="spinner-border spinner-border-sm ms-1 text-white "
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          )}
+          <button
+            className="btn  text-white btn-sm text-nowrap ms-2"
+            type="submit"
+            // disabled={position.trim().length === 0}
+            onClick={upDatePostion}
           >
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        )}
-        <button
-          className="btn  text-white btn-sm text-nowrap ms-2"
-          type="submit"
-          // disabled={position.trim().length === 0}
-          onClick={upDatePostion}
-        >
-          Update Position
-        </button>
+            Update Position
+          </button>
+        </div>
       </div>
-      </div>
-     
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Col xl={12}>
           <Card className="custom-card mt-2">

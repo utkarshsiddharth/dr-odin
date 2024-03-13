@@ -172,7 +172,7 @@ const Productlist: FC<ProductlistProps> = () => {
           </Card.Body>
         </Card>
       </Col>
-      <div className="">
+      <div className="  " style={{overflowX:'scroll' ,height:'64vh' ,scrollBehavior:'smooth'}}>
         <Row className="d-flex">
           {product?.products.map((product: any, index: number) => (
             <Col xl={3} id="draggable-left">
