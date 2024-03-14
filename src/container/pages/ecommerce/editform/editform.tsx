@@ -321,7 +321,7 @@ const Orders: FC<OrdersProps> = () => {
           <Toast
             onClose={() => setShow(false)}
             show={show}
-            delay={2000}
+            delay={1000}
             autohide
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">
@@ -346,7 +346,7 @@ const Orders: FC<OrdersProps> = () => {
           <Toast
             onClose={() => setUpdate(false)}
             show={update}
-            delay={2000}
+            delay={1000}
             autohide
           >
             <Toast.Header className="toast-header buyNow text-fixed-white mb-0">

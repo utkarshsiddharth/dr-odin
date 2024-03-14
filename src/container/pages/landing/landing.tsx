@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { Autoplay, Pagination } from "swiper/modules";
+// import { Autoplay, Pagination } from "swiper/modules";
 import Navbar1 from "./navbar";
 import { connect } from "react-redux";
 import store from "../../../redux/store";
@@ -33,17 +33,17 @@ import web4 from "../../../assets/images/media/landing/web/4.png";
 import web5 from "../../../assets/images/media/landing/web/5.png";
 import web6 from "../../../assets/images/media/landing/web/6.png";
 import face1 from "../../../assets/images/faces/1.jpg";
-import face2 from "../../../assets/images/faces/2.jpg";
-import face3 from "../../../assets/images/faces/3.jpg";
-import face4 from "../../../assets/images/faces/4.jpg";
+// import face2 from "../../../assets/images/faces/2.jpg";
+// import face3 from "../../../assets/images/faces/3.jpg";
+// import face4 from "../../../assets/images/faces/4.jpg";
 import face5 from "../../../assets/images/faces/5.jpg";
-import face7 from "../../../assets/images/faces/7.jpg";
-import face10 from "../../../assets/images/faces/10.jpg";
+// import face7 from "../../../assets/images/faces/7.jpg";
+// import face10 from "../../../assets/images/faces/10.jpg";
 import face12 from "../../../assets/images/faces/12.jpg";
 import face15 from "../../../assets/images/faces/15.jpg";
-import face16 from "../../../assets/images/faces/16.jpg";
+// import face16 from "../../../assets/images/faces/16.jpg";
 
-import { Swiper, SwiperSlide } from "swiper/react";
+// import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -740,7 +740,7 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
                 </p>
               </div>
             </div>
-            <div className="swiper pagination-dynamic text-start">
+            {/* <div className="swiper pagination-dynamic text-start">
               <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -1158,7 +1158,7 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
                   </Row>
                 </SwiperSlide>
               </Swiper>
-            </div>
+            </div> */}
           </div>
         </section>
         <section className="section  section-bg" id="team">
