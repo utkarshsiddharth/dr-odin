@@ -19,14 +19,12 @@ const schema = yup
     price: yup.number().required(),
     originalPrice: yup.number().required(),
     link: yup.string().required(),
-    position: yup.number().required("Position zero is not acceptable"),
   })
   .required();
 
 const Orders: FC<OrdersProps> = () => {
   const [position, setPosition] = useState("");
   const [formData, setFormData] = useState<any>(null);
-  console.log("data", formData);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [show, setShow] = useState(false);
@@ -34,7 +32,6 @@ const Orders: FC<OrdersProps> = () => {
   const [image, setImage] = useState("");
   const { productId: id } = useParams();
   const token = localStorage.getItem("token");
-  // console.log(token);
   const config = {
     headers: {
       Authorization: token,
@@ -110,11 +107,7 @@ const Orders: FC<OrdersProps> = () => {
     formData.append("link", data.link);
     try {
       setLoading(true);
-      await axios.put(
-        `https://doctorodinbackend.onrender.com/product/${id}`,
-        formData,
-        config
-      );
+      await axios.put(BASE_URL + `product/${id}`, formData, config);
       setShow(true);
       setTimeout(() => {
         routeChange();
@@ -127,22 +120,18 @@ const Orders: FC<OrdersProps> = () => {
 
   const handleInputChange = (event: any) => {
     const value = event.target.value;
-    if (value === '0') {
-      setError('position', {
-        type: 'manual',
-        message: 'Position zero is not acceptable'
-      });
-    } else {
-      setPosition(value);
-    }
+    setPosition(value);
   };
 
   const upDatePostion = async () => {
+    if (position === "0") {
+      return;
+    }
+
     try {
       setLoading1(true);
       const data = { position: position };
       const res = await axios.patch(BASE_URL + `product/${id}`, data, config);
-      // console.log("data", id);
       console.log(res);
       setTimeout(() => {
         routeChange();
@@ -228,6 +217,7 @@ const Orders: FC<OrdersProps> = () => {
                   <Form.Label htmlFor="input-text" className=" fs-14">
                     Position
                   </Form.Label>
+
                   <Form.Control
                     type="number"
                     id="input-text"
@@ -235,7 +225,9 @@ const Orders: FC<OrdersProps> = () => {
                     value={position}
                     onChange={handleInputChange}
                   />
-                  <p className="text-danger ">{errors?.position?.message}</p>
+                  <p className="text-danger ">
+                    {position === "0" && "Position zero is not acceptable"}
+                  </p>
                   <Form.Label htmlFor="input-file" className="fs-14 mt-2">
                     Image Upload
                   </Form.Label>
