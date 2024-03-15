@@ -172,15 +172,15 @@ const Productlist: FC<ProductlistProps> = () => {
           </Card.Body>
         </Card>
       </Col>
-      <div className="  " style={{overflowX:'scroll' ,height:'64vh' ,scrollBehavior:'smooth'}}>
-        <Row className="d-flex">
+      <div className="">
+        <Row className="d-flex ">
           {product?.products.map((product: any, index: number) => (
-            <Col xl={3} id="draggable-left">
+            <Col xl={3} className="">
               <div className="" style={{ height: "98%" }}>
                 <Card
                   key={index}
-                  className="custom-card"
-                  style={{ height: "94%" }}
+                  className="custom-card "
+                  style={{ height: "98%" }}
                 >
                   <Card.Body className="rounded-3 mt-3">
                     <Dropdown className="d-flex justify-content-between">
@@ -232,7 +232,13 @@ const Productlist: FC<ProductlistProps> = () => {
                       ₹ {product.price}
                     </p>
                     <div className="d-flex justify-content-between">
-                      <span className={product.price === product.originalPrice ? '' : 'op-7 text-decoration-line-through'}>
+                      <span
+                        className={
+                          product.price === product.originalPrice
+                            ? ""
+                            : "op-7 text-decoration-line-through"
+                        }
+                      >
                         MRP {product.originalPrice}
                       </span>
                       <a

@@ -38,3 +38,26 @@
 .borderbuyNow{
   border-color: #0095EC;
 }
+.scroll-container-card {
+  max-height: 20vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scroll-container-card::-webkit-scrollbar {
+  background-color: transparent;
+}
+.scroll-container-card::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+.scroll-container-card {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scroll-container-card::-moz-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+.scroll-container-card::-moz-scrollbar-thumb {
+  background-color: transparent;
+}
