@@ -7,7 +7,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { BASE_URL } from "../../../../utils/apis/apis";
 import logoo from "../../../../assets/images/brand-logos/logoo.png";
-
 interface OrdersProps {
   id?: string;
   onClose?: () => void;
@@ -20,6 +19,7 @@ const schema = yup
     price: yup.number().required(),
     originalPrice: yup.number().required(),
     link: yup.string().required(),
+    position: yup.number().required("Position zero is not acceptable"),
   })
   .required();
 
@@ -127,7 +127,14 @@ const Orders: FC<OrdersProps> = () => {
 
   const handleInputChange = (event: any) => {
     const value = event.target.value;
-    setPosition(value);
+    if (value === '0') {
+      setError('position', {
+        type: 'manual',
+        message: 'Position zero is not acceptable'
+      });
+    } else {
+      setPosition(value);
+    }
   };
 
   const upDatePostion = async () => {
@@ -228,7 +235,7 @@ const Orders: FC<OrdersProps> = () => {
                     value={position}
                     onChange={handleInputChange}
                   />
-
+                  <p className="text-danger ">{errors?.position?.message}</p>
                   <Form.Label htmlFor="input-file" className="fs-14 mt-2">
                     Image Upload
                   </Form.Label>

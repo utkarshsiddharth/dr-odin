@@ -28,8 +28,8 @@ const Login: FC<LoginProps> = ({ ThemeChanger }: any) => {
   const [loading, setLoading] = useState(false);
   const [err, setError] = useState("");
   const [data, setData] = useState({
-    email: "example@gmail.com",
-    password: "password123",
+    email: "",
+    password: "",
   });
   const { email, password } = data;
   const changeHandler = (e: any) => {
