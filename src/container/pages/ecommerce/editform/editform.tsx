@@ -27,6 +27,7 @@ const Orders: FC<OrdersProps> = () => {
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [show, setShow] = useState(false);
   const [update, setUpdate] = useState(false);
   const [image, setImage] = useState("");
@@ -74,7 +75,6 @@ const Orders: FC<OrdersProps> = () => {
     setValue,
     formState: { errors },
     handleSubmit,
-    reset,
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -88,7 +88,11 @@ const Orders: FC<OrdersProps> = () => {
     },
   });
   const handleCancel = () => {
-    reset();
+    setLoading2(true);
+    setTimeout(() => {
+      routeChange();
+    }, 500);
+    setLoading2(false);
   };
   const onSubmit = async (data: any) => {
     if (parseFloat(data.originalPrice) < parseFloat(data.price)) {
@@ -179,6 +183,14 @@ const Orders: FC<OrdersProps> = () => {
                 </div>
                 <div className="col-sm-auto">
                   <div className="d-flex flex-sm-row">
+                    {loading2 && (
+                      <div
+                        className="spinner-border spinner-border-sm ms-1 text-white "
+                        role="status"
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                     <button
                       className="btn buyNow text-white btn-sm text-nowrap mt-2"
                       type="button"
@@ -186,6 +198,7 @@ const Orders: FC<OrdersProps> = () => {
                     >
                       Cancel
                     </button>
+
                     <div className="d-flex align-items-center mt-2 ms-2 buyNow rounded-2 justify-content-center">
                       {loading && (
                         <div

@@ -48,7 +48,7 @@ const Productlist: FC<ProductlistProps> = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(8);
+  // const [productsPerPage] = useState(8);
   const [xlShow, setXlShow] = useState(false);
   const [image, setImage] = useState("");
   useEffect(() => {
@@ -126,7 +126,6 @@ const Productlist: FC<ProductlistProps> = () => {
   const handleFile = (event: any) => {
     setImage(event.target.files[0]);
   };
-
   return (
     <Fragment>
       <Col>
@@ -186,7 +185,7 @@ const Productlist: FC<ProductlistProps> = () => {
                     <Dropdown className="d-flex justify-content-between">
                       <div
                         className="buyNow rounded-5 p-1 text-center"
-                        style={{ width: 31, height: 32 }}
+                        style={{ width: 38, height: 36 }}
                       >
                         <h5 className=" text-white text-center">
                           {product?.position}
@@ -419,19 +418,14 @@ const Productlist: FC<ProductlistProps> = () => {
               >
                 Previous
               </Pagination.Item>
-              {Array.from({
-                length: Math.ceil(product.products.length / productsPerPage),
-              }).map((_, index) => (
-                <div
-                  key={index}
-                  // active={index + 1 === currentPage}
-                  // onClick={() => paginate(index + 1)}
-                  className="h-25 text-center p-2 text-white"
-                  style={{ width: "", background: "#0095EC" }}
-                >
-                  {index + 1}
-                </div>
-              ))}
+              <div
+                key={currentPage}
+                onClick={() => setCurrentPage(currentPage)}
+                className="buyNow text-center p-2"
+                style={{height:"64",width:"26px"}} 
+              >
+                {currentPage}
+              </div>
               <Pagination.Item
                 disabled={
                   product?.pageInfo?.currentPage ==
