@@ -184,8 +184,8 @@ const Productlist: FC<ProductlistProps> = () => {
                   <Card.Body className="rounded-3 mt-3">
                     <Dropdown className="d-flex justify-content-between">
                       <div
-                        className="buyNow rounded-5 p-1 text-center"
-                        style={{ width: 38, height: 36 }}
+                        className="buyNow rounded-5 p-2 text-center"
+                        style={{ width: 52, height: 45 }}
                       >
                         <h5 className=" text-white text-center">
                           {product?.position}
@@ -221,18 +221,15 @@ const Productlist: FC<ProductlistProps> = () => {
                       alt="..."
                       // style={{ maxWidth: "60%",maxHeight:"40%"  }}
                     />
-                    <div className="d-flex justify-content-between mt-4 fs-13 text-muted">
-                    <p className=" ">
-                      {product.name}
-                    </p>
-                    <p className="  ">
+                    <p className=" fs-13 text-muted d-flex justify-content-end ">
                       {product.moddleNo}
                     </p>
-                    </div>
-                    
                   </Card.Body>
 
                   <Card.Footer className="mb-4 mt-0">
+                  <p className="fs-14  fw-bold mb-0 d-flex align-items-center">
+                      {product.name}
+                    </p>
                     <p className="fs-14 buyNoww fw-semibold mb-0 d-flex align-items-center">
                       ₹ {product.price}
                     </p>
@@ -443,7 +440,7 @@ const Productlist: FC<ProductlistProps> = () => {
                 key={currentPage}
                 onClick={() => setCurrentPage(currentPage)}
                 className="buyNow text-center p-2"
-                style={{height:"64",width:"26px"}} 
+                style={{height:"64",width:"32px"}} 
               >
                 {currentPage}
               </div>
