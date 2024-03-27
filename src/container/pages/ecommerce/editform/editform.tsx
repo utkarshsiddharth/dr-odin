@@ -256,7 +256,8 @@ const Orders: FC<OrdersProps> = () => {
                     alt="done"
                   ></img>
                 </div>
-
+               
+                <p className="text-danger">{errors.name?.message}</p>
                 <Form.Label htmlFor="input-text " className="mt-4 fs-14">
                   Model Number
                 </Form.Label>

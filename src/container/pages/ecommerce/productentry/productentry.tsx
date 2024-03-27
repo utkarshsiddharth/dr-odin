@@ -36,8 +36,8 @@ const schema = yup
 const Productlist: FC<ProductlistProps> = () => {
   const [product, setProduct] = useState({
     image: "",
+    name:"",
     moddleNo: "",
-    name: "",
     originalPrice: 0,
     price: 0,
     link: "",
@@ -221,12 +221,18 @@ const Productlist: FC<ProductlistProps> = () => {
                       alt="..."
                       // style={{ maxWidth: "60%",maxHeight:"40%"  }}
                     />
-                    <p className="d-flex justify-content-end fs-13 text-muted ">
+                    <div className="d-flex justify-content-between mt-4 fs-13 text-muted">
+                    <p className=" ">
+                      {product.name}
+                    </p>
+                    <p className="  ">
                       {product.moddleNo}
                     </p>
+                    </div>
+                    
                   </Card.Body>
 
-                  <Card.Footer className="pb-5">
+                  <Card.Footer className="mb-4 mt-0">
                     <p className="fs-14 buyNoww fw-semibold mb-0 d-flex align-items-center">
                       ₹ {product.price}
                     </p>
@@ -286,6 +292,21 @@ const Productlist: FC<ProductlistProps> = () => {
                     onChange={handleFile}
                   />
                   <p className="text-danger ">{errors.image?.message}</p>
+
+                  <Form.Label htmlFor="input-text " className="mt-2 fs-14">
+                    Product Name
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    // name="photo"
+                    id="input-text"
+                    placeholder="Enter your model number"
+                    {...register("name", {
+                      required: true,
+                      maxLength: 20,
+                    })}
+                  />
+                   <p className="text-danger ">{errors.name?.message}</p>
 
                   <Form.Label htmlFor="input-text " className="mt-2 fs-14">
                     Model Number
